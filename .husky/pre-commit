@@ -3,3 +3,6 @@
 
 npm test
 npm run lint
+
+echo "Reminder: Make sure you've branched off the main branch!"
+echo "Reminder: Ensure all tests pass and esLint errors are cleared before committing."
