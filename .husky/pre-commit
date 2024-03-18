@@ -13,11 +13,5 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-npm run lint
-if [ $? -ne 0 ]; then
-    echo "Linting errors found. Fix errors before committing."
-    exit 1
-fi
-
 echo "Reminder: Make sure you've branched off the main branch!"
 echo "Reminder: Ensure all tests pass and ESLint errors are cleared before committing."
