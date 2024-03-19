@@ -1,4 +1,4 @@
-const { filterInitialData, extractCoins, extractPairs } = require("../utils/utils");
+const { filterInitialData, extractCoins, extractPairs, formatPairsData, formatCoinsData } = require("../utils/utils");
 
 describe('Testing functionality of the filterInitialData function', () => {
     const data =
@@ -462,14 +462,62 @@ describe('Testing functionality of extracting pairs from data', () => {
 });
 
 
-describe('Testing functionality of ()', () => {
-    test('should ', () => {
+describe('Testing functionality of formatPairsData', () => {
+    const data = [
+        {
+            "pair_id": 1262381,
+            "pair_name": "BTC/FDUSD",
+            "base_asset": "BTC",
+            "quote_asset": "FDUSD"
+        },
+        {
+            "pair_id": 9933,
+            "pair_name": "BTC/USDT",
+            "base_asset": "BTC",
+            "quote_asset": "USDT"
+        },
+        {
+            "pair_id": 1261061,
+            "pair_name": "FDUSD/USDT",
+            "base_asset": "FDUSD",
+            "quote_asset": "USDT"
+        }
+    ];
+    test('should add isActive, dateAdded and dateRemoved to Pairs Data', () => {
+        const pairs = formatPairsData(data);
+        pairs.forEach(pair => {
+            expect(pair).toHaveProperty('pair_id');
+            expect(pair).toHaveProperty('pair_name');
+            expect(pair).toHaveProperty('base_asset');
+            expect(pair).toHaveProperty('quote_asset');
+            expect(pair).toHaveProperty('isActive');
+            expect(pair).toHaveProperty('dateAdded');
+            expect(pair).toHaveProperty('dateRemoved');
+        })
 
     });
 });
 
-describe('Testing functionality of ()', () => {
-    test('should ', () => {
-
+describe('Testing functionality of formatCoinsData', () => {
+    const data = [
+        {
+            "coin_id": 1,
+            "coin_name": "BTC"
+        },
+        {
+            "coin_id": 26081,
+            "coin_name": "FDUSD"
+        }
+    ]
+    test('should add symbol, coin_slug, dataadded and logo_url', () => {
+        const coins = formatCoinsData(data);
+        coins.forEach(coin => {
+            expect(coin).toHaveProperty('coin_id');
+            expect(coin).toHaveProperty('symbol');
+            expect(coin).toHaveProperty('coin_name');
+            expect(coin).toHaveProperty('coin_slug');
+            expect(coin).toHaveProperty('dateadded');
+            expect(coin).toHaveProperty('logo_url');
+        })
     });
 });

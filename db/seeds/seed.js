@@ -15,7 +15,7 @@ const seed = ({ coinsData, pairsData, tradeData }) => {
 				coin_id INT PRIMARY KEY,
                 symbol VARCHAR(50),
 				coin_name VARCHAR(50) NOT NULL UNIQUE,
-                coin-slug VARCHAR(50) NOT NULL UNIQUE,
+                coin_slug VARCHAR(50) NOT NULL UNIQUE,
 				dateadded TIMESTAMP,
 				logo_url TEXT
 			);`)

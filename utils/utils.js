@@ -62,3 +62,24 @@ exports.extractPairs = (data) => {
     console.log(`Pairs data has been written to ${outputFilePath}`);
     return pairs;
 }
+
+exports.formatPairsData = (data) => {
+    const formatData = data.map(item => {
+        item.isActive = null;
+        item.dateAdded = null;
+        item.dateRemoved = null;
+        return item; 
+    });
+    return formatData;
+}
+
+exports.formatCoinsData = (data) => {
+    const formatData = data.map(item => {
+        item.symbol = null;
+        item.coin_slug = null;
+        item.dateadded = null;
+        item.logo_url = null;
+        return item;
+    });
+    return formatData;
+}
