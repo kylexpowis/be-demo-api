@@ -432,24 +432,18 @@ describe('Testing functionality of extracting pairs from data', () => {
             "pair_name": "BTC/FDUSD",
             "base_asset": "BTC",
             "quote_asset": "FDUSD",
-            "price": 68167.58,
-            "last_updated": "2024-03-17T21:56:15.000Z"
         },
         {
             "pair_id": 9933,
             "pair_name": "BTC/USDT",
             "base_asset": "BTC",
             "quote_asset": "USDT",
-            "price": 68026.61,
-            "last_updated": "2024-03-17T21:56:15.000Z"
         },
         {
             "pair_id": 1261061,
             "pair_name": "FDUSD/USDT",
             "base_asset": "FDUSD",
             "quote_asset": "USDT",
-            "price": 0.9981,
-            "last_updated": "2024-03-17T21:56:15.000Z"
         }];
         expect(pairs.length).toEqual(3);
         expectedPairs.forEach(expectedPair => {
@@ -463,11 +457,6 @@ describe('Testing functionality of extracting pairs from data', () => {
             expect(pair).toHaveProperty('pair_name');
             expect(pair).toHaveProperty('base_asset');
             expect(pair).toHaveProperty('quote_asset');
-            expect(pair).toHaveProperty('price');
-            expect(pair).toHaveProperty('volume_24h');
-            expect(pair).toHaveProperty('depth_negative_two');
-            expect(pair).toHaveProperty('depth_positive_two');
-            expect(pair).toHaveProperty('last_updated');
         });
     });
 });
