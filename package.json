@@ -6,6 +6,7 @@
   "scripts": {
     "setup-dbs": "psql -f db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
+    "seed-prod": "cross-env NODE_ENV=production npm run seed",
     "start": "node app.js",
     "prepare": "husky install",
     "test": "jest --coverage",
@@ -26,6 +27,7 @@
   "author": "Mohammed Saabir Ahmed (https://github.com/ProdiGeeZ), Ima Khan (https://github.com/imaa04), Kyle Powis (https://github.com/kylexpowis)",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.8",
     "axios": "^1.6.7",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
