@@ -511,9 +511,9 @@ describe("Testing functionality of formatPairsData", () => {
       expect(pair).toHaveProperty("pair_name");
       expect(pair).toHaveProperty("base_asset");
       expect(pair).toHaveProperty("quote_asset");
-      expect(pair).toHaveProperty("isActive");
-      expect(pair).toHaveProperty("dateAdded");
-      expect(pair).toHaveProperty("dateRemoved");
+      expect(pair).toHaveProperty("is_active");
+      expect(pair).toHaveProperty("date_added");
+      expect(pair).toHaveProperty("date_removed");
     });
   });
 });
@@ -536,8 +536,9 @@ describe("Testing functionality of formatCoinsData", () => {
       expect(coin).toHaveProperty("symbol");
       expect(coin).toHaveProperty("coin_name");
       expect(coin).toHaveProperty("coin_slug");
-      expect(coin).toHaveProperty("dateadded");
+      expect(coin).toHaveProperty("date_added");
       expect(coin).toHaveProperty("logo_url");
+      expect(coin).toHaveProperty("is_active");
     });
   });
 });

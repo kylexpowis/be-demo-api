@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS pairs_database;
-CREATE DATABASE pairs_database;
+CREATE DATABASE pairsniper;
 
 DROP DATABASE IF EXISTS pairs_database_test;
-CREATE DATABASE pairs_database_test;
+CREATE DATABASE pairsniper_test;

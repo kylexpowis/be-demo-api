@@ -12,26 +12,27 @@ const seed = ({ coinsData, pairsData }) => {
     .then(() =>
       db.query(`
         CREATE TABLE coins (
-          coin_id SERIAL PRIMARY KEY,
-          symbol VARCHAR(50),
+          coin_id INT PRIMARY KEY,
           coin_name VARCHAR(50) NOT NULL UNIQUE,
-          coin_slug VARCHAR(50) NOT NULL UNIQUE,
-          dateadded TIMESTAMP,
-          logo_url TEXT
+          symbol VARCHAR(50),
+          coin_slug VARCHAR(50) UNIQUE,
+          date_added TIMESTAMP,
+          logo_url TEXT,
+          is_active BOOLEAN
         );
       `)
     )
     .then(() =>
       db.query(`
         CREATE TABLE pairs (
-          pair_id SERIAL PRIMARY KEY,
+          pair_id INT PRIMARY KEY,
           pair_name VARCHAR(50) NOT NULL UNIQUE,
-          symbol VARCHAR(10) NOT NULL,
+          symbol VARCHAR(10),
           base_asset VARCHAR(10) NOT NULL, 
           quote_asset VARCHAR(10) NOT NULL,
-          isActive BOOLEAN NOT NULL,
-          dateAdded TIMESTAMP NOT NULL,
-          dateRemoved TIMESTAMP,
+          is_active BOOLEAN,
+          date_added TIMESTAMP,
+          date_removed TIMESTAMP,
           FOREIGN KEY (base_asset) REFERENCES coins(coin_name) ON DELETE CASCADE,
           FOREIGN KEY (quote_asset) REFERENCES coins(coin_name) ON DELETE CASCADE
         );
@@ -40,7 +41,7 @@ const seed = ({ coinsData, pairsData }) => {
     .then(() =>
       db.query(`
         CREATE TABLE metrics (
-          price_id SERIAL PRIMARY KEY,
+          price_id INT PRIMARY KEY,
           base_asset_id INT,
           quote_asset_id INT,
           timestamp TIMESTAMP,
@@ -68,7 +69,7 @@ const seed = ({ coinsData, pairsData }) => {
     .then(() =>
       db.query(`
         CREATE TABLE exchanges (
-          exchange_id SERIAL PRIMARY KEY,
+          exchange_id INT PRIMARY KEY,
           exchange_name VARCHAR(50),
           logo TEXT
         );
@@ -86,21 +87,59 @@ const seed = ({ coinsData, pairsData }) => {
       `)
     )
     .then(() => {
-      const formattedCoinArray = coinsData.map(({ coin_id, symbol, coin_name, coin_slug, dateAdded, logo_url }) => {
-        return [coin_id, symbol, coin_name, null, dateAdded, logo_url];
-      });
+      const formattedCoinArray = coinsData.map(
+        ({
+          coin_id,
+          coin_name,
+          symbol,
+          coin_slug,
+          date_added,
+          logo_url,
+          is_active,
+        }) => {
+          return [
+            coin_id,
+            coin_name,
+            symbol,
+            coin_slug,
+            date_added,
+            logo_url,
+            is_active,
+          ];
+        }
+      );
       const queryString = format(
-        `INSERT INTO coins (coin_id, symbol, coin_name, coin_slug, dateadded, logo_url) VALUES %L`,
+        `INSERT INTO coins (coin_id, coin_name, symbol, coin_slug, date_added, logo_url, is_active) VALUES %L`,
         formattedCoinArray
       );
       return db.query(queryString);
     })
     .then(() => {
-      const formattedPairsArray = pairsData.map(({ pair_id, pair_name, symbol, baseAsset, quoteAsset, isActive, dateAdded, dateRemoved }) => {
-        return [pair_id, pair_name, symbol, baseAsset, quoteAsset, isActive, dateAdded, dateRemoved];
-      });
+      const formattedPairsArray = pairsData.map(
+        ({
+          pair_id,
+          pair_name,
+          symbol,
+          base_asset,
+          quote_asset,
+          isActive,
+          date_added,
+          date_removed,
+        }) => {
+          return [
+            pair_id,
+            pair_name,
+            symbol,
+            base_asset,
+            quote_asset,
+            isActive,
+            date_added,
+            date_removed,
+          ];
+        }
+      );
       const queryString = format(
-        `INSERT INTO pairs (pair_id, pair_name, symbol, base_asset, quote_asset, isActive, dateAdded, dateRemoved) VALUES %L`,
+        `INSERT INTO pairs (pair_id, pair_name, symbol, base_asset, quote_asset, is_active, date_added, date_removed) VALUES %L`,
         formattedPairsArray
       );
       return db.query(queryString);
