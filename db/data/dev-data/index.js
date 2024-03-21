@@ -1,2 +1,2 @@
-exports.coinsData = require('./coinsData');
-exports.pairsData = require('./pairsData');
+exports.coinsData = require("./coinsData");
+exports.pairsData = require("./pairsData");
