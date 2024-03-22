@@ -31,7 +31,7 @@ function getEndpoint(url, fileName, API_KEY) {
 }
 
 const createInitialData = async () => {
-    await getEndpoint("https://pro-api.coinmarketcap.com/v1/exchange/market-pairs/latest?id=270&limit=2000", "InitialData", API_KEY);
+    await getEndpoint("https://pro-api.coinmarketcap.com/v1/exchange/market-pairs/latest?id=270&category=spot&limit=2000", "InitialData", API_KEY);
 }
 
 createInitialData();
