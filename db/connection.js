@@ -19,7 +19,9 @@ if (ENV === "production") {
   }
 
   poolConfig.connectionString = process.env.DATABASE_URL;
-  poolConfig.ssl = true;
+  poolConfig.ssl = {
+    rejectUnauthorized: false
+  };
   poolConfig.max = 20;
 }
 
