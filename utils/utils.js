@@ -1,18 +1,12 @@
 const fs = require("fs");
 
 exports.filterInitialData = (data) => {
-  const outputFilePath = "./db/data/filteredData.js";
-  const filteredData = data.filter((item) => item.category === "spot");
-  const content = `module.exports = ${JSON.stringify(filteredData, null, 2)};`;
-
-  fs.writeFileSync(outputFilePath, content, "utf8");
-  return filteredData;
+  return data.filter((item) => item.category === "spot");
 };
 
 exports.extractCoins = (data) => {
   const coins = [];
   const seen = new Set();
-  const outputFilePath = "./db/data/dev-data/coinsData.js";
 
   data.forEach((item) => {
     if (
@@ -38,23 +32,18 @@ exports.extractCoins = (data) => {
     }
   });
 
-  const content = `module.exports = ${JSON.stringify(coins, null, 2)};`;
-
-  fs.writeFileSync(outputFilePath, content, "utf8");
-  console.log(`Coins data has been written to ${outputFilePath}`);
   return coins;
 };
 
 exports.extractPairs = (data) => {
   const pairs = [];
   const seen = new Set();
-  const outputFilePath = "./db/data/dev-data/pairsData.js";
 
   data.forEach((item) => {
     if (
       item.market_pair_base.currency_type === "cryptocurrency" &&
       item.market_pair_quote.currency_type === "cryptocurrency" &&
-      !seen.has(item.market_pair_base.currency_id)
+      !seen.has(item.market_id)
     ) {
       pairs.push({
         pair_id: item.market_id,
@@ -66,31 +55,25 @@ exports.extractPairs = (data) => {
     }
   });
 
-  const content = `module.exports = ${JSON.stringify(pairs, null, 2)};`;
-
-  fs.writeFileSync(outputFilePath, content, "utf8");
-  console.log(`Pairs data has been written to ${outputFilePath}`);
   return pairs;
 };
 
 exports.formatPairsData = (data) => {
-  const formatData = data.map((item) => {
-    item.is_active = null;
-    item.date_added = null;
-    item.date_removed = null;
-    return item;
-  });
-  return formatData;
+  return data.map((item) => ({
+    ...item,
+    is_active: null,
+    date_added: null,
+    date_removed: null,
+  }));
 };
 
 exports.formatCoinsData = (data) => {
-  const formatData = data.map((item) => {
-    item.symbol = null;
-    item.coin_slug = null;
-    item.date_added = null;
-    item.logo_url = null;
-    item.is_active = null;
-    return item;
-  });
-  return formatData;
+  return data.map((item) => ({
+    ...item,
+    symbol: null,
+    coin_slug: null,
+    date_added: null,
+    logo_url: null,
+    is_active: null,
+  }));
 };
