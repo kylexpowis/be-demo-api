@@ -52,6 +52,8 @@ const seed = ({ coinsData, pairsData }) => {
           max_supply DECIMAL,
           liquidity DECIMAL,
           marketcap DECIMAL,
+          depth_negative_two DECIMAL,
+          depth_positive_two DECIMAL
           FOREIGN KEY (base_asset_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
           FOREIGN KEY (quote_asset_id) REFERENCES coins(coin_id) ON DELETE CASCADE
         );
