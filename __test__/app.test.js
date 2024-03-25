@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 describe("GET /api/coins/:coin_id", () => {
-  test.only("200: Can get coin by ID including trading pair count", () => {
+  test("200: Can get coin by ID including trading pair count", () => {
     return request(app)
       .get("/api/coins/1")
       .expect(404)
