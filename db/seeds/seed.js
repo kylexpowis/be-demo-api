@@ -16,7 +16,7 @@ const seed = ({ coinsData, pairsData }) => {
           coin_id INT PRIMARY KEY,
           coin_name VARCHAR(50) NOT NULL UNIQUE,
           symbol VARCHAR(50),
-          coin_slug VARCHAR(50) UNIQUE,
+          coin_slug VARCHAR(50),
           date_added TIMESTAMP,
           logo_url TEXT,
           is_active BOOLEAN
@@ -25,48 +25,45 @@ const seed = ({ coinsData, pairsData }) => {
     )
     .then(() =>
       db.query(`
-        CREATE TABLE pairs (
-          pair_id INT PRIMARY KEY,
-          pair_name VARCHAR(50) NOT NULL UNIQUE,
-          symbol VARCHAR(10),
-          base_asset VARCHAR(10) NOT NULL, 
-          quote_asset VARCHAR(10) NOT NULL,
-          is_active BOOLEAN,
-          date_added TIMESTAMP,
-          date_removed TIMESTAMP,
-          FOREIGN KEY (base_asset) REFERENCES coins(coin_name) ON DELETE CASCADE,
-          FOREIGN KEY (quote_asset) REFERENCES coins(coin_name) ON DELETE CASCADE
-        );
+      CREATE TABLE pairs (
+        pair_id INT PRIMARY KEY,
+        pair_name VARCHAR(50) NOT NULL,
+        base_asset VARCHAR(50) NOT NULL, 
+        quote_asset VARCHAR(50) NOT NULL, 
+        is_active BOOLEAN,
+        date_added TIMESTAMP,
+        date_removed TIMESTAMP
+      );
       `)
     )
     .then(() =>
       db.query(`
         CREATE TABLE metrics (
           price_id INT PRIMARY KEY,
-          base_asset_id INT,
-          quote_asset_id INT,
+          base_asset VARCHAR(50), 
+          quote_asset VARCHAR(50), 
           timestamp TIMESTAMP,
-          price DECIMAL NOT NULL,
-          volume24hr DECIMAL,
-          circulating_supply DECIMAL,
-          total_supply DECIMAL,
-          max_supply DECIMAL,
-          liquidity DECIMAL,
+          price DECIMAL,
           depth_negative_two DECIMAL,
           depth_positive_two DECIMAL
-          FOREIGN KEY (base_asset_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
-          FOREIGN KEY (quote_asset_id) REFERENCES coins(coin_id) ON DELETE CASCADE
         );
       `)
-  )
-    .then(() => {
-      db.query()
-      `CREATE TABLE marketcaps (
-        coin_id INT PRIMARY KEY,
+    )
+    .then(() =>
+      db.query(`
+      CREATE TABLE marketcaps (
+        marketcap_id SERIAL PRIMARY KEY,
+        coin_id INT,
+        liquidity DECIMAL,
         marketcap DECIMAL,
-        FOREIGN KEY (coin_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
-      );`
-    })
+        circulating_supply DECIMAL,
+        total_supply DECIMAL,
+        max_supply DECIMAL,
+        volume24hr DECIMAL,
+        FOREIGN KEY (coin_id) REFERENCES coins(coin_id) ON DELETE CASCADE
+      );
+    `)
+    )
     .then(() =>
       db.query(`
         CREATE TABLE users (
@@ -89,8 +86,8 @@ const seed = ({ coinsData, pairsData }) => {
       db.query(`
         CREATE TABLE watchlist (
           watch_id SERIAL PRIMARY KEY,
-          user_id INT NOT NULL UNIQUE,
-          coin_id INT NOT NULL UNIQUE,
+          user_id INT NOT NULL,
+          coin_id INT NOT NULL,
           FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
           FOREIGN KEY (coin_id) REFERENCES coins(coin_id) ON DELETE CASCADE
         );
@@ -129,7 +126,6 @@ const seed = ({ coinsData, pairsData }) => {
         ({
           pair_id,
           pair_name,
-          symbol,
           base_asset,
           quote_asset,
           isActive,
@@ -139,7 +135,6 @@ const seed = ({ coinsData, pairsData }) => {
           return [
             pair_id,
             pair_name,
-            symbol,
             base_asset,
             quote_asset,
             isActive,
@@ -149,7 +144,7 @@ const seed = ({ coinsData, pairsData }) => {
         }
       );
       const queryString = format(
-        `INSERT INTO pairs (pair_id, pair_name, symbol, base_asset, quote_asset, is_active, date_added, date_removed) VALUES %L`,
+        `INSERT INTO pairs (pair_id, pair_name, base_asset, quote_asset, is_active, date_added, date_removed) VALUES %L`,
         formattedPairsArray
       );
       return db.query(queryString);
