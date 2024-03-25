@@ -4,6 +4,7 @@ const db = require("../connection");
 const seed = ({ coinsData, pairsData }) => {
   return db
     .query(`DROP TABLE IF EXISTS watchlist;`)
+    .then(() => db.query(`DROP TABLE IF EXISTS marketcaps;`))
     .then(() => db.query(`DROP TABLE IF EXISTS exchanges;`))
     .then(() => db.query(`DROP TABLE IF EXISTS users;`))
     .then(() => db.query(`DROP TABLE IF EXISTS metrics;`))
@@ -51,12 +52,21 @@ const seed = ({ coinsData, pairsData }) => {
           total_supply DECIMAL,
           max_supply DECIMAL,
           liquidity DECIMAL,
-          marketcap DECIMAL,
+          depth_negative_two DECIMAL,
+          depth_positive_two DECIMAL
           FOREIGN KEY (base_asset_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
           FOREIGN KEY (quote_asset_id) REFERENCES coins(coin_id) ON DELETE CASCADE
         );
       `)
-    )
+  )
+    .then(() => {
+      db.query()
+      `CREATE TABLE marketcaps (
+        coin_id INT PRIMARY KEY,
+        marketcap DECIMAL,
+        FOREIGN KEY (coin_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
+      );`
+    })
     .then(() =>
       db.query(`
         CREATE TABLE users (
