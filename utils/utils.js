@@ -15,7 +15,7 @@ exports.extractCoins = (data) => {
     ) {
       coins.push({
         coin_id: item.market_pair_base.currency_id,
-        coin_name: item.market_pair_base.currency_symbol,
+        symbol: item.market_pair_base.currency_symbol,
       });
       seen.add(item.market_pair_base.currency_id);
     }
@@ -26,7 +26,7 @@ exports.extractCoins = (data) => {
     ) {
       coins.push({
         coin_id: item.market_pair_quote.currency_id,
-        coin_name: item.market_pair_quote.currency_symbol,
+        symbol: item.market_pair_quote.currency_symbol,
       });
       seen.add(item.market_pair_quote.currency_id);
     }

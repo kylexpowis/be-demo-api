@@ -44,12 +44,14 @@ const seed = ({ coinsData, pairsData }) => {
           price_id INT PRIMARY KEY,
           base_id INT,
           quote_id INT,
+          pair_id INT,
           timestamp TIMESTAMP,
           price DECIMAL,
           depth_negative_two DECIMAL,
           depth_positive_two DECIMAL,
           FOREIGN KEY (base_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
-          FOREIGN KEY (quote_id) REFERENCES coins(coin_id) ON DELETE CASCADE
+          FOREIGN KEY (quote_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
+          FOREIGN KEY (pair_id) REFERENCES pairs(pair_id) ON DELETE CASCADE
         );
       `)
     )
@@ -101,8 +103,8 @@ const seed = ({ coinsData, pairsData }) => {
       const formattedCoinArray = coinsData.map(
         ({
           coin_id,
-          coin_name,
           symbol,
+          coin_name,
           coin_slug,
           date_added,
           logo_url,
@@ -110,8 +112,8 @@ const seed = ({ coinsData, pairsData }) => {
         }) => {
           return [
             coin_id,
-            coin_name,
             symbol,
+            coin_name,
             coin_slug,
             date_added,
             logo_url,
