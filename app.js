@@ -1,9 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const { getCoinById } = require("./controllers/coins.controllers");
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+app.get("/api/v1/cois/:coin_id", getCoinById);
 
 app.all("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
