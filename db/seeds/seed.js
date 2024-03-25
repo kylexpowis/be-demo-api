@@ -14,8 +14,8 @@ const seed = ({ coinsData, pairsData }) => {
       db.query(`
         CREATE TABLE coins (
           coin_id INT PRIMARY KEY,
-          coin_name VARCHAR(50) NOT NULL UNIQUE,
-          symbol VARCHAR(50),
+          symbol VARCHAR(50) NOT NULL,
+          coin_name VARCHAR(50),
           coin_slug VARCHAR(50),
           date_added TIMESTAMP,
           logo_url TEXT,
@@ -28,11 +28,13 @@ const seed = ({ coinsData, pairsData }) => {
       CREATE TABLE pairs (
         pair_id INT PRIMARY KEY,
         pair_name VARCHAR(50) NOT NULL,
-        base_asset VARCHAR(50) NOT NULL, 
-        quote_asset VARCHAR(50) NOT NULL, 
+        base_id INT NOT NULL, 
+        quote_id INT NOT NULL, 
         is_active BOOLEAN,
         date_added TIMESTAMP,
-        date_removed TIMESTAMP
+        date_removed TIMESTAMP,
+        FOREIGN KEY (base_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
+        FOREIGN KEY (quote_id) REFERENCES coins(coin_id) ON DELETE CASCADE
       );
       `)
     )
@@ -40,12 +42,16 @@ const seed = ({ coinsData, pairsData }) => {
       db.query(`
         CREATE TABLE metrics (
           price_id INT PRIMARY KEY,
-          base_asset VARCHAR(50), 
-          quote_asset VARCHAR(50), 
+          base_id INT,
+          quote_id INT,
+          pair_id INT,
           timestamp TIMESTAMP,
           price DECIMAL,
           depth_negative_two DECIMAL,
-          depth_positive_two DECIMAL
+          depth_positive_two DECIMAL,
+          FOREIGN KEY (base_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
+          FOREIGN KEY (quote_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
+          FOREIGN KEY (pair_id) REFERENCES pairs(pair_id) ON DELETE CASCADE
         );
       `)
     )
@@ -97,8 +103,8 @@ const seed = ({ coinsData, pairsData }) => {
       const formattedCoinArray = coinsData.map(
         ({
           coin_id,
-          coin_name,
           symbol,
+          coin_name,
           coin_slug,
           date_added,
           logo_url,
@@ -106,8 +112,8 @@ const seed = ({ coinsData, pairsData }) => {
         }) => {
           return [
             coin_id,
-            coin_name,
             symbol,
+            coin_name,
             coin_slug,
             date_added,
             logo_url,
@@ -116,7 +122,7 @@ const seed = ({ coinsData, pairsData }) => {
         }
       );
       const queryString = format(
-        `INSERT INTO coins (coin_id, coin_name, symbol, coin_slug, date_added, logo_url, is_active) VALUES %L`,
+        `INSERT INTO coins (coin_id, symbol, coin_name,  coin_slug, date_added, logo_url, is_active) VALUES %L`,
         formattedCoinArray
       );
       return db.query(queryString);
@@ -126,8 +132,8 @@ const seed = ({ coinsData, pairsData }) => {
         ({
           pair_id,
           pair_name,
-          base_asset,
-          quote_asset,
+          base_id,
+          quote_id,
           isActive,
           date_added,
           date_removed,
@@ -135,8 +141,8 @@ const seed = ({ coinsData, pairsData }) => {
           return [
             pair_id,
             pair_name,
-            base_asset,
-            quote_asset,
+            base_id,
+            quote_id,
             isActive,
             date_added,
             date_removed,
@@ -144,7 +150,7 @@ const seed = ({ coinsData, pairsData }) => {
         }
       );
       const queryString = format(
-        `INSERT INTO pairs (pair_id, pair_name, base_asset, quote_asset, is_active, date_added, date_removed) VALUES %L`,
+        `INSERT INTO pairs (pair_id, pair_name, base_id, quote_id, is_active, date_added, date_removed) VALUES %L`,
         formattedPairsArray
       );
       return db.query(queryString);
