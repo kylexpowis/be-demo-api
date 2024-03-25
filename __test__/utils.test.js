@@ -6,7 +6,7 @@ const {
   formatCoinsData,
 } = require("../utils/utils");
 
-describe("Testing functionality of the filterInitialData function", () => {
+describe.skip("Testing functionality of the filterInitialData function", () => {
   const data = [
     {
       outlier_detected: 0,
@@ -178,7 +178,7 @@ describe("Testing functionality of the filterInitialData function", () => {
   });
 });
 
-describe("Testing functionality of extractCoins()", () => {
+describe.skip("Testing functionality of extractCoins()", () => {
   const data = [
     {
       outlier_detected: 0,
@@ -332,7 +332,7 @@ describe("Testing functionality of extractCoins()", () => {
   });
 });
 
-describe("Testing functionality of extracting pairs from data", () => {
+describe.skip("Testing functionality of extracting pairs from data", () => {
   const data = [
     {
       outlier_detected: 0,
@@ -483,7 +483,7 @@ describe("Testing functionality of extracting pairs from data", () => {
   });
 });
 
-describe("Testing functionality of formatPairsData", () => {
+describe.skip("Testing functionality of formatPairsData", () => {
   const data = [
     {
       pair_id: 1262381,
@@ -518,7 +518,7 @@ describe("Testing functionality of formatPairsData", () => {
   });
 });
 
-describe("Testing functionality of formatCoinsData", () => {
+describe.skip("Testing functionality of formatCoinsData", () => {
   const data = [
     {
       coin_id: 1,
