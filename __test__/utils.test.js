@@ -290,9 +290,9 @@ describe("Testing functionality of extractCoins()", () => {
     },
   ];
   const expectedCoins = [
-    { coin_id: 1, coin_name: "BTC" },
-    { coin_id: 26081, coin_name: "FDUSD" },
-    { coin_id: 825, coin_name: "USDT" },
+    { coin_id: 1, symbol: "BTC" },
+    { coin_id: 26081, symbol: "FDUSD" },
+    { coin_id: 825, symbol: "USDT" },
   ];
   test("Function should extract market base asset with the currency_id and symbol_name for each object", () => {
     const coins = extractCoins(data);
@@ -319,9 +319,9 @@ describe("Testing functionality of extractCoins()", () => {
     const coins = extractCoins(data);
     coins.forEach((coin) => {
       expect(coin).toHaveProperty("coin_id");
-      expect(coin).toHaveProperty("coin_name");
+      expect(coin).toHaveProperty("symbol");
       expect(typeof coin.coin_id).toBe("number");
-      expect(typeof coin.coin_name).toBe("string");
+      expect(typeof coin.symbol).toBe("string");
     });
   });
 
@@ -449,21 +449,21 @@ describe("Testing functionality of extracting pairs from data", () => {
       {
         pair_id: 1262381,
         pair_name: "BTC/FDUSD",
-        base_asset: "BTC",
-        quote_asset: "FDUSD",
+        base_id: 1,
+        quote_id: 26081,
       },
       {
         pair_id: 9933,
         pair_name: "BTC/USDT",
-        base_asset: "BTC",
-        quote_asset: "USDT",
+        base_id: 1,
+        quote_id: 825,
       },
       {
         pair_id: 1261061,
         pair_name: "FDUSD/USDT",
-        base_asset: "FDUSD",
-        quote_asset: "USDT",
-      },
+        base_id: 26081,
+        quote_id: 825,
+      }
     ];
     expect(pairs.length).toEqual(3);
     expectedPairs.forEach((expectedPair) => {
@@ -477,8 +477,8 @@ describe("Testing functionality of extracting pairs from data", () => {
     pairs.forEach((pair) => {
       expect(pair).toHaveProperty("pair_id");
       expect(pair).toHaveProperty("pair_name");
-      expect(pair).toHaveProperty("base_asset");
-      expect(pair).toHaveProperty("quote_asset");
+      expect(pair).toHaveProperty("base_id");
+      expect(pair).toHaveProperty("quote_id");
     });
   });
 });
@@ -488,29 +488,29 @@ describe("Testing functionality of formatPairsData", () => {
     {
       pair_id: 1262381,
       pair_name: "BTC/FDUSD",
-      base_asset: "BTC",
-      quote_asset: "FDUSD",
+      base_id: 1,
+      quote_id: 26081,
     },
     {
       pair_id: 9933,
       pair_name: "BTC/USDT",
-      base_asset: "BTC",
-      quote_asset: "USDT",
+      base_id: 1,
+      quote_id: 825,
     },
     {
       pair_id: 1261061,
       pair_name: "FDUSD/USDT",
-      base_asset: "FDUSD",
-      quote_asset: "USDT",
-    },
+      base_id: 26081,
+      quote_id: 1,
+    }
   ];
   test("should add isActive, dateAdded and dateRemoved to Pairs Data", () => {
     const pairs = formatPairsData(data);
     pairs.forEach((pair) => {
       expect(pair).toHaveProperty("pair_id");
       expect(pair).toHaveProperty("pair_name");
-      expect(pair).toHaveProperty("base_asset");
-      expect(pair).toHaveProperty("quote_asset");
+      expect(pair).toHaveProperty("base_id");
+      expect(pair).toHaveProperty("quote_id");
       expect(pair).toHaveProperty("is_active");
       expect(pair).toHaveProperty("date_added");
       expect(pair).toHaveProperty("date_removed");
@@ -522,11 +522,11 @@ describe("Testing functionality of formatCoinsData", () => {
   const data = [
     {
       coin_id: 1,
-      coin_name: "BTC",
+      symbol: "BTC",
     },
     {
       coin_id: 26081,
-      coin_name: "FDUSD",
+      symbol: "FDUSD",
     },
   ];
   test("should add symbol, coin_slug, dataadded and logo_url", () => {
