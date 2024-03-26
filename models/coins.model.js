@@ -1,7 +1,6 @@
 const db = require("../db/connection");
 
 exports.fetchCoinById = (coin_id) => {
-  console.log("HI FROM MODEL");
   let queryString = `
   SELECT
   c.coin_id,
@@ -10,12 +9,14 @@ exports.fetchCoinById = (coin_id) => {
   c.date_added,
   c.is_active,
   (
-      SELECT COUNT(p.pair_id)::int
-      FROM pairs p
-      WHERE p.quote_asset = c.coin_name
+    SELECT COUNT(p.pair_id)::int
+    FROM pairs p
+    WHERE p.quote_id = c.coin_id
   ) AS trading_pair_count
-FROM coins c
-WHERE c.coin_id = $1;
+FROM
+  coins c
+WHERE
+  c.coin_id = $1;
 `;
   return db.query(queryString, [coin_id]).then((result) => {
     if (result.rows.length === 0) {
