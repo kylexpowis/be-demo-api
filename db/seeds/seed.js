@@ -61,7 +61,6 @@ const seed = ({ coinsData, pairsData }) => {
       CREATE TABLE marketcaps (
         marketcap_id SERIAL PRIMARY KEY,
         coin_id INT,
-        liquidity DECIMAL,
         marketcap DECIMAL,
         circulating_supply DECIMAL,
         total_supply DECIMAL,
