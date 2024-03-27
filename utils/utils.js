@@ -15,7 +15,7 @@ exports.extractCoins = (data) => {
     ) {
       coins.push({
         coin_id: item.market_pair_base.currency_id,
-        coin_name: item.market_pair_base.currency_symbol,
+        symbol: item.market_pair_base.currency_symbol,
       });
       seen.add(item.market_pair_base.currency_id);
     }
@@ -26,7 +26,7 @@ exports.extractCoins = (data) => {
     ) {
       coins.push({
         coin_id: item.market_pair_quote.currency_id,
-        coin_name: item.market_pair_quote.currency_symbol,
+        symbol: item.market_pair_quote.currency_symbol,
       });
       seen.add(item.market_pair_quote.currency_id);
     }
@@ -48,8 +48,8 @@ exports.extractPairs = (data) => {
       pairs.push({
         pair_id: item.market_id,
         pair_name: item.market_pair,
-        base_asset: item.market_pair_base.currency_symbol,
-        quote_asset: item.market_pair_quote.currency_symbol,
+        base_id: item.market_pair_base.currency_id,
+        quote_id: item.market_pair_quote.currency_id,
       });
       seen.add(item.market_id);
     }
@@ -70,7 +70,7 @@ exports.formatPairsData = (data) => {
 exports.formatCoinsData = (data) => {
   return data.map((item) => ({
     ...item,
-    symbol: null,
+    coin_name: null,
     coin_slug: null,
     date_added: null,
     logo_url: null,

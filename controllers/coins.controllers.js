@@ -3,7 +3,9 @@ const { fetchCoinById } = require("../models/coins.model");
 const { fetchAllCoins } = require("../models/coins.model")
 
 exports.getAllCoins = (req, res, next) => {
-    fetchAllCoins(req.body)
+    const { sort_by } = req.query;
+    const { order } = req.query
+    fetchAllCoins(sort_by, order)
         .then((coins) => {
             res.status(200).send({ coins });
         })
