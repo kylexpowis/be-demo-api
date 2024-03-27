@@ -49,6 +49,7 @@ const seed = ({ coinsData, pairsData }) => {
           price DECIMAL,
           depth_negative_two DECIMAL,
           depth_positive_two DECIMAL,
+          volume24hr DECIMAL,
           FOREIGN KEY (base_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
           FOREIGN KEY (quote_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
           FOREIGN KEY (pair_id) REFERENCES pairs(pair_id) ON DELETE CASCADE
