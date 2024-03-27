@@ -10,3 +10,12 @@ exports.getCoinById = (req, res, next) => {
       next(err);
     });
 };
+
+exports.getNewCoins = (req, res, next) => {
+  const timeframe = req.query.timeframe || "1 day";
+  fetchNewCoins(timeframe)
+    .then((coins) => {
+      res.status(200).send({ coins });
+    })
+    .catch(next);
+};

@@ -26,3 +26,17 @@ WHERE
     return result.rows[0];
   });
 };
+
+exports.fetchNewCoins = (timeframe = "1 day") => {
+  const validTimeframes = ["1 hour", "1 day", "3 days", "7 days", "28 days"];
+  if (!validTimeframes.includes(timeframe)) {
+    throw new Error("Invalid timeframe specified");
+  }
+  const queryString = `
+  SELECT coin_id, coin_name, logo_url, date_added
+  FROM coins
+  WHERE coins.date_added >= NOW() - INTERVAL '${timeframe}';`;
+  return db.query(queryString).then((result) => {
+    return result.rows;
+  });
+};
