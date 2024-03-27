@@ -41,7 +41,7 @@ const seed = ({ coinsData, pairsData }) => {
     .then(() =>
       db.query(`
         CREATE TABLE metrics (
-          price_id INT PRIMARY KEY,
+          price_id SERIAL PRIMARY KEY,
           base_id INT,
           quote_id INT,
           pair_id INT,
@@ -49,6 +49,7 @@ const seed = ({ coinsData, pairsData }) => {
           price DECIMAL,
           depth_negative_two DECIMAL,
           depth_positive_two DECIMAL,
+          volume24hr DECIMAL,
           FOREIGN KEY (base_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
           FOREIGN KEY (quote_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
           FOREIGN KEY (pair_id) REFERENCES pairs(pair_id) ON DELETE CASCADE
@@ -60,7 +61,6 @@ const seed = ({ coinsData, pairsData }) => {
       CREATE TABLE marketcaps (
         marketcap_id SERIAL PRIMARY KEY,
         coin_id INT,
-        liquidity DECIMAL,
         marketcap DECIMAL,
         circulating_supply DECIMAL,
         total_supply DECIMAL,

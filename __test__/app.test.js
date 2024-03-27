@@ -103,3 +103,57 @@ describe("404: Non-existent endpoint", () => {
 });
 
 
+// describe("GET /api/coins-new", () => {
+//   test("GET:200 sends new coins for default timeframe", () => {
+//     return request(app)
+//       .get("/api/coins-new")
+//       .expect(200)
+//       .then((res) => {
+//         expect(Array.isArray(res.body.coins)).toBe(true);
+//         res.body.coins.forEach((coin) => {
+//           expect(coin).toMatchObject({
+//             coin_id: expect.any(Number),
+//             coin_name: expect.any(String),
+//             logo_url: expect.any(String),
+//             date_added: expect.any(String),
+//           });
+//         });
+//       });
+//   });
+//   test("GET:200 sends new coins for a specific timeframe of 1 hour", () => {
+//     return request(app)
+//       .get("/api/coins-new?timeframe=1+hour")
+//       .expect(200)
+//       .then((response) => {
+//         expect(Array.isArray(response.body.coins)).toBe(true);
+//       });
+//   });
+//   test("GET:200 sends new coins for a specific timeframe of 1 day", () => {
+//     return request(app)
+//       .get("/api/coins-new?timeframe=1+day")
+//       .expect(200)
+//       .then((response) => {
+//         expect(Array.isArray(response.body.coins)).toBe(true);
+//         console.log(response.body.coins);
+//       });
+//   });
+//   test("GET:200 sends new coins for a specific timeframe of 3 days", () => {
+//     return request(app)
+//       .get("/api/coins-new?timeframe=3+days")
+//       .expect(200)
+//       .then((response) => {
+//         expect(Array.isArray(response.body.coins)).toBe(true);
+//         console.log(response.body.coins);
+//       });
+//   });
+//   test("GET:200 sends new coins for a specific timeframe of 7 days", () => {
+//     return request(app)
+//       .get("/api/coins-new?timeframe=7+days")
+//       .expect(200)
+//       .then((response) => {
+//         expect(Array.isArray(response.body.coins)).toBe(true);
+//         console.log(response.body.coins);
+//       });
+//   });
+// });
+
