@@ -41,7 +41,7 @@ const seed = ({ coinsData, pairsData }) => {
     .then(() =>
       db.query(`
         CREATE TABLE metrics (
-          price_id INT PRIMARY KEY,
+          price_id SERIAL PRIMARY KEY,
           base_id INT,
           quote_id INT,
           pair_id INT,
