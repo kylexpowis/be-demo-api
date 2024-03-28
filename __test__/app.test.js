@@ -3,6 +3,11 @@ const request = require("supertest");
 const db = require("../db/connection.js");
 const seed = require("../db/seeds/seed.js");
 const devData = require("../db/data/dev-data/index.js");
+const { toBeSorted } = require('jest-sorted');
+
+
+
+//const endpoints = require("../endpoints.json");
 
 beforeEach(() => {
   return seed(devData);
@@ -10,6 +15,52 @@ beforeEach(() => {
 
 afterAll(() => {
   return db.end();
+});
+
+describe("GET /api/coins", () => {
+  test("GET:200 sends all coins", () => {
+    return request(app)
+      .get("/api/coins")
+      .expect(200)
+      .then((res) => {
+        const coins = res.body.coins;
+        coins.forEach((coin) => {
+          expect(coin).toMatchObject({
+            coin_id: expect.any(Number),
+            coin_name: expect.any(Object),
+            symbol: expect.any(String),
+            coin_slug: expect.any(Object),
+            date_added: expect.any(Object),
+            logo_url: expect.any(Object),
+            is_active: expect.any(Object),
+            pair_count: expect.any(Number),
+            pairs_added: expect.any(Number),
+            pairs_removed: expect.any(Number)
+          });
+        });
+      });
+  })
+  test("GET:404 responds with an appropriate status and error message when given a non-existent api", () => {
+    return request(app)
+      .get("/api/coin")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Path not found");
+      });
+  });
+})
+describe("GET /api/coins/most-paired", () => {
+  test("GET:200 sends all coins by most paired and makes sure the first coin sent doesn't have a pair_count of 0.", () => {
+    return request(app)
+      .get("/api/coins?order=DESC&sort_by=pair_count")
+      .expect(200)
+      .then((res) => {
+        const coins = res.body.coins;
+        console.log(coins);
+        //expect(coins).toBeSorted('pair_count', {descending :true})
+      })
+  });
+
 });
 
 describe("GET /api/v1/coins/:coin_id", () => {
@@ -50,6 +101,7 @@ describe("404: Non-existent endpoint", () => {
       });
   });
 });
+
 
 // describe("GET /api/coins-new", () => {
 //   test("GET:200 sends new coins for default timeframe", () => {
@@ -108,7 +160,6 @@ describe("404: Non-existent endpoint", () => {
 // describe("GET /new-pairs", () => {
 //   it("should return an array of pairs for getnewpairs", async () => {
 //     const response = await request(app).get("/new-pairs");
-
 //     expect(response.statusCode).toBe(200);
 //     expect(response.body).toHaveProperty("pairs");
 //     expect(Array.isArray(response.body.pairs)).toBe(true);
