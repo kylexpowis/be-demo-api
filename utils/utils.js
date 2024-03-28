@@ -9,10 +9,7 @@ exports.extractCoins = (data) => {
   const seen = new Set();
 
   data.forEach((item) => {
-    if (
-      item.market_pair_base.currency_type === "cryptocurrency" &&
-      !seen.has(item.market_pair_base.currency_id)
-    ) {
+    if (!seen.has(item.market_pair_base.currency_id)) {
       coins.push({
         coin_id: item.market_pair_base.currency_id,
         symbol: item.market_pair_base.currency_symbol,
@@ -20,10 +17,7 @@ exports.extractCoins = (data) => {
       seen.add(item.market_pair_base.currency_id);
     }
 
-    if (
-      item.market_pair_quote.currency_type === "cryptocurrency" &&
-      !seen.has(item.market_pair_quote.currency_id)
-    ) {
+    if (!seen.has(item.market_pair_quote.currency_id)) {
       coins.push({
         coin_id: item.market_pair_quote.currency_id,
         symbol: item.market_pair_quote.currency_symbol,
