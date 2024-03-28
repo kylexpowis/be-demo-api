@@ -63,7 +63,6 @@ WHERE
         if (result.rows.length === 0) {
             return Promise.reject({ status: 404, msg: "Coin does not exist" });
         }
-        console.log(result);
         return result.rows[0];
     });
 };
@@ -81,5 +80,21 @@ exports.fetchNewCoins = (timeframe = "1 day") => {
     return result.rows;
   });
 };
+
+
+exports.selectPairsByBaseId = (base_id) => {
+  return db.query(
+    `SELECT *
+FROM pairs
+JOIN metrics ON metrics.base_id = pairs.base_id
+WHERE pairs.base_id = $1;`, [base_id]
+  ).then((result) => {
+    if (result.rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "Coin does not exist" });
+    }
+    return result.rows;
+})
+}
+
 
 
