@@ -40,3 +40,5 @@ exports.fetchNewCoins = (timeframe = "1 day") => {
     return result.rows;
   });
 };
+
+

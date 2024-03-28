@@ -104,3 +104,13 @@ describe("404: Non-existent endpoint", () => {
 //       });
 //   });
 // });
+
+// describe("GET /new-pairs", () => {
+//   it("should return an array of pairs for getnewpairs", async () => {
+//     const response = await request(app).get("/new-pairs");
+
+//     expect(response.statusCode).toBe(200);
+//     expect(response.body).toHaveProperty("pairs");
+//     expect(Array.isArray(response.body.pairs)).toBe(true);
+//   });
+// });
