@@ -81,6 +81,7 @@ exports.fetchNewCoins = (timeframe = "1 day") => {
   });
 };
 
+
 exports.selectPairsByBaseId = (base_id) => {
   return db.query(
     `SELECT *
@@ -94,3 +95,6 @@ WHERE pairs.base_id = $1;`, [base_id]
     return result.rows;
 })
 }
+
+
+
