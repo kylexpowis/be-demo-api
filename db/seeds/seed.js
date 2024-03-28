@@ -66,6 +66,7 @@ const seed = ({ coinsData, pairsData }) => {
         total_supply DECIMAL,
         max_supply DECIMAL,
         volume24hr DECIMAL,
+        roc24hr DECIMAL,
         timestamp TIMESTAMP,
         FOREIGN KEY (coin_id) REFERENCES coins(coin_id) ON DELETE CASCADE
       );
