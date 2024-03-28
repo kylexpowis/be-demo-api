@@ -56,7 +56,6 @@ describe("GET /api/coins/most-paired", () => {
       .expect(200)
       .then((res) => {
         const coins = res.body.coins;
-        console.log(coins);
         //expect(coins).toBeSorted('pair_count', {descending :true})
       })
   });
@@ -156,4 +155,32 @@ describe("404: Non-existent endpoint", () => {
 //       });
 //   });
 // });
-
+// describe("GET /api/v1/pairs/:base_id", () => {
+//   test.only("GET:200 gets all pairs by base id", () => {
+//     return request(app)
+//       .get("/api/v1/pairs/1")
+//       .expect(200)
+//       .then((res) => {
+//         console.log(res, 'this is res in test');
+//         const base = res.body.base;
+//         base.forEach((item) => {
+//           expect(item).toMatchObject({
+//             pair_id: expect.any(Number),
+//             pair_name: expect.any(String),
+//             base_id: expect.any(Number),
+//             quote_id: expect.any(Number),
+//             is_active: expect.any(Boolean),
+//             date_added: null,
+//             date_removed: null,
+//             pairs_removed: null,
+//             quote_id: expect.any(Number),
+//             timestamp: expect.any(Number),
+//             price: expect.any(Number),
+//             depth_negative_two: expect.any(Number),
+//             depth_positive_two: expect.any(Number),
+//             volume24hr: expect.any(Number),
+//           });
+//         });
+//       });
+//   })
+// })
