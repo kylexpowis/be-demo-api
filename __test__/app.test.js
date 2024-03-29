@@ -47,4 +47,12 @@ describe("GET /api/coins/:coin_id", () => {
                 });
             });
     })
+    test("GET:404 responds with an appropriate status and error message when given a non-existent api", () => {
+        return request(app)
+            .get("/api/coin")
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toBe("Path not found");
+            });
+    });
 })
