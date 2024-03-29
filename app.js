@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { getPairsSummary } = require("./controllers/pairs.controllers");
 const app = express();
 
 app.use(express.json());
@@ -12,7 +13,7 @@ const { getNewCoins } = require("./controllers/coins.controllers");
     - Replace each comment with the endpoint path 
 */
 // <---Endpoints for Dashboard (Homepage of app)--->
-// 1. Summary Table --> "/api/pairs/summary"
+app.get("/api/pairs/summary", getPairsSummary);
 
 // 2. New Pairs Table --> "/api/pairs/new"
 
