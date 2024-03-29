@@ -5,6 +5,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const { getNewCoins } = require("./controllers/coins.controllers");
 /*    FOLLOW THIS!
     - Ensure each endpoint matches the wireframe for that endpoint.
     - Wireframe -> Endpoint -> Pull Request
@@ -16,7 +17,7 @@ app.use(cors());
 // 2. New Pairs Table --> "/api/pairs/new"
 
 // 3. New Coins Table --> "/api/coins/new"
-
+app.get('/api/coins/new', getNewCoins);
 // <---Endpoints for Single Coin View--->
 // 1. Coin Summary --> "/api/coins/:coin_id"
 
