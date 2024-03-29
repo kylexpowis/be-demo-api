@@ -79,7 +79,7 @@ describe("GET /api/coins/:coin_id", () => {
 });
 
 describe("GET /api/pairs/new", () => {
-  test.only("GET:200 sends all new pairs limited to 20.", () => {
+  test("GET:200 sends all new pairs limited to 20.", () => {
     return request(app)
       .get("/api/pairs/new")
       .expect(200)
@@ -92,6 +92,27 @@ describe("GET /api/pairs/new", () => {
             pair_name: expect.any(String),
             date_added: expect.any(String),
             is_active: expect.any(Boolean),
+          });
+        });
+      });
+  });
+});
+
+describe("GET /api/pairs/:coin_id", () => {
+  test.only("GET:200 sends pair details for a given coin ID", () => {
+    return request(app)
+      .get("/api/pairs/1")
+      .expect(200)
+      .then((res) => {
+        const pairById = res.body.pairById;
+        expect(Array.isArray(pairById)).toBe(true);
+        pairById.forEach((pair) => {
+          expect(pair).toMatchObject({
+            pair_name: expect.any(String),
+            is_active: expect.any(Boolean),
+            date_added: expect.any(String),
+            base_logo_url: expect.any(String),
+            quote_logo_url: expect.any(String),
           });
         });
       });
