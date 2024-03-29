@@ -1,24 +1,29 @@
 const express = require("express");
 const cors = require("cors");
-const { getCoinById } = require("./controllers/coins.controllers");
-const { getAllCoins, getPairsByBase } = require("./controllers/coins.controllers");
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/api/v1/coins/:coin_id", getCoinById);
-app.get("/api/checkForListings");
-app.get("/api");
-app.get("/api/coins", getAllCoins);
-app.get("/api/coins/:coin_name");
-app.get("/api/coins/:coin_id");
-app.get("/api/coins_new");
-app.get("/api/v1/pairs/:base_id", getPairsByBase);
-app.get("/api/pairs");
-app.get("/api/pairs/pair_id");
-app.get("/api/metrics");
-app.get("/api/metrics/coin_id");
+/*    FOLLOW THIS!
+    - Ensure each endpoint matches the wireframe for that endpoint.
+    - Wireframe -> Endpoint -> Pull Request
+    - Replace each comment with the endpoint path 
+*/
+// <---Endpoints for Dashboard (Homepage of app)--->
+// 1. Summary Table --> "/api/pairs/summary"
+
+// 2. New Pairs Table --> "/api/pairs/new"
+
+// 3. New Coins Table --> "/api/coins/new"
+
+// <---Endpoints for Single Coin View--->
+// 1. Coin Summary --> "/api/coins/:coin_id"
+
+// 2. Pairs By Coin ID --> "/api/pairs/:coin_id"
+
+// <---Either in Homepage or its own page--->
+// 1. MarketCap Rankings Table --> "/api/rankings/marketcap"
 
 app.all("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });

@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 const config = require("../config/API.json");
-const { extractCoins, extractPairs, extractTradeData } = require("../utils/utils");
+const { extractCoins, extractPairs, extractTradeData, updateCoinsData } = require("../utils/utils");
 
 const API_KEY = config.API_KEY;
 
@@ -12,11 +12,11 @@ function getEndpoint(url) {
             Accept: "application/json",
         },
     })
-    .then((response) => response.data)
-    .catch((error) => {
-        console.error(`Error fetching data from API:`, error);
-        throw error;
-    });
+        .then((response) => response.data)
+        .catch((error) => {
+            console.error(`Error fetching data from API:`, error);
+            throw error;
+        });
 }
 
 function writeDataToFile(filePath, data) {
@@ -28,10 +28,16 @@ function writeDataToFile(filePath, data) {
 async function generateSeedData() {
     try {
         const marketPairsResponse = await getEndpoint("https://pro-api.coinmarketcap.com/v1/exchange/market-pairs/latest?id=270&category=spot&limit=2000");
-        const coinsData = extractCoins(marketPairsResponse.data.market_pairs);
-        writeDataToFile("./db/data/coinsData.js", coinsData);
+        let coinsData = extractCoins(marketPairsResponse.data.market_pairs);
 
         const coinIds = coinsData.map(coin => coin.coin_id).join(',');
+
+        const coinInfoResponse = await getEndpoint(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?id=${coinIds}`);
+
+        coinsData = updateCoinsData(coinsData, coinInfoResponse);
+
+        writeDataToFile("./db/data/coinsData.js", coinsData);
+
         const quotesResponse = await getEndpoint(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=${coinIds}`);
         const tradeData = extractTradeData(quotesResponse.data);
         writeDataToFile("./db/data/tradeData.js", tradeData);
@@ -40,7 +46,7 @@ async function generateSeedData() {
         writeDataToFile("./db/data/pairsData.js", pairsData);
 
     } catch (error) {
-        console.error("Failed to create initial data:", error);
+        console.error("Failed to create seed data:", error);
     }
 }
 

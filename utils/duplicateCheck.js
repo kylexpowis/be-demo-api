@@ -1,4 +1,4 @@
-const data = require("./db/data/pairsData")
+const data = require("../db/data/pairsData")
 
 function countDuplicateCoinIds(data) {
     const idCounts = {}; // Object to store each coin_id's count

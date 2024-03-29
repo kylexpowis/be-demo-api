@@ -33,6 +33,21 @@ exports.extractCoins = (data) => {
   return coins;
 };
 
+exports.updateCoinsData = (coinsData, coinInfoResponse) => {
+  return coinsData.map((coin) => {
+    const coinInfo = coinInfoResponse.data[coin.coin_id.toString()];
+    if (coinInfo) {
+      return {
+        ...coin,
+        coin_name: coinInfo.name, 
+        logo_url: coinInfo.logo,  
+        date_added: coinInfo.date_added 
+      };
+    }
+    return coin;
+  });
+};
+
 exports.extractPairs = (data) => {
   const pairs = [];
   const seen = new Set();
@@ -81,4 +96,3 @@ exports.extractTradeData = (data) => {
 
   return tradeData;
 };
-
