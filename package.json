@@ -8,9 +8,8 @@
     "seed": "node ./db/seeds/run-seed.js",
     "seed-prod": "cross-env NODE_ENV=production npm run seed",
     "start": "node app.js",
-    "prepare": "husky install",
     "test": "jest --coverage",
-    "lint": "eslint ."
+    "finish-project": "echo 'Relax lad. Do it yourself. Stop crying.'"
   },
   "repository": {
     "type": "git",
