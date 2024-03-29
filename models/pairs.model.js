@@ -32,3 +32,15 @@ FROM coins c;`;
     return result.rows[0];
   });
 };
+
+exports.showLatestPairs = () => {
+  const queryString = `SELECT
+    pair_name,
+    date_added,
+    is_active FROM pairs ORDER BY date_added
+      DESC LIMIT 20
+    `;
+  return db.query(queryString).then(({ rows }) => {
+    return rows;
+  });
+};
