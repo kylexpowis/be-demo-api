@@ -63,7 +63,7 @@ exports.extractPairs = (data) => {
         depth_negative_two: item.quote.USD.depth_negative_two,
         volume24hr: item.quote.USD.volume_24h,
         is_active: true, 
-        date_added: null,
+        date_added: new Date().toISOString(),
         last_updated: item.quote.USD.last_updated,
       });
       seen.add(item.market_id);
