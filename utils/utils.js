@@ -1,32 +1,30 @@
-const fs = require("fs");
-
-exports.filterInitialData = (data) => {
-  return data.filter((item) => item.category === "spot");
-};
-
 exports.extractCoins = (data) => {
   const coins = [];
   const seen = new Set();
 
   data.forEach((item) => {
-    if (
-      item.market_pair_base.currency_type === "cryptocurrency" &&
-      !seen.has(item.market_pair_base.currency_id)
-    ) {
+    if (!seen.has(item.market_pair_base.currency_id)) {
       coins.push({
         coin_id: item.market_pair_base.currency_id,
         symbol: item.market_pair_base.currency_symbol,
+        coin_name: null, 
+        currency_type: item.market_pair_base.currency_type,
+        logo_url: null, 
+        is_active: true, 
+        date_added: null, 
       });
       seen.add(item.market_pair_base.currency_id);
     }
 
-    if (
-      item.market_pair_quote.currency_type === "cryptocurrency" &&
-      !seen.has(item.market_pair_quote.currency_id)
-    ) {
+    if (!seen.has(item.market_pair_quote.currency_id)) {
       coins.push({
         coin_id: item.market_pair_quote.currency_id,
         symbol: item.market_pair_quote.currency_symbol,
+        coin_name: null,
+        currency_type: item.market_pair_quote.currency_type,
+        logo_url: null, 
+        is_active: true, 
+        date_added: null, 
       });
       seen.add(item.market_pair_quote.currency_id);
     }
@@ -40,16 +38,18 @@ exports.extractPairs = (data) => {
   const seen = new Set();
 
   data.forEach((item) => {
-    if (
-      item.market_pair_base.currency_type === "cryptocurrency" &&
-      item.market_pair_quote.currency_type === "cryptocurrency" &&
-      !seen.has(item.market_id)
-    ) {
+    if (!seen.has(item.market_id)) {
       pairs.push({
         pair_id: item.market_id,
         pair_name: item.market_pair,
         base_id: item.market_pair_base.currency_id,
         quote_id: item.market_pair_quote.currency_id,
+        depth_positive_two: item.quote.USD.depth_positive_two,
+        depth_negative_two: item.quote.USD.depth_negative_two,
+        volume24hr: item.quote.USD.volume_24h,
+        is_active: true, 
+        date_added: null,
+        last_updated: item.quote.USD.last_updated,
       });
       seen.add(item.market_id);
     }
@@ -58,22 +58,27 @@ exports.extractPairs = (data) => {
   return pairs;
 };
 
-exports.formatPairsData = (data) => {
-  return data.map((item) => ({
-    ...item,
-    is_active: null,
-    date_added: null,
-    date_removed: null,
-  }));
+exports.extractTradeData = (data) => {
+  const tradeData = [];
+  const seen = new Set();
+
+  Object.values(data).forEach((coin) => {
+    if (coin.quote && coin.quote.USD && !seen.has(coin.id)) {
+      tradeData.push({
+        coin_id: coin.id,
+        price: coin.quote.USD.price,
+        marketcap: coin.quote.USD.market_cap,
+        circulating_supply: coin.circulating_supply,
+        total_supply: coin.total_supply,
+        max_supply: coin.max_supply,
+        volume24hr: coin.quote.USD.volume_24h,
+        volume_percent_change24hr: coin.quote.USD.volume_change_24h,
+        timestamp: coin.quote.USD.last_updated,
+      });
+      seen.add(coin.id);
+    }
+  });
+
+  return tradeData;
 };
 
-exports.formatCoinsData = (data) => {
-  return data.map((item) => ({
-    ...item,
-    coin_name: null,
-    coin_slug: null,
-    date_added: null,
-    logo_url: null,
-    is_active: null,
-  }));
-};

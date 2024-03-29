@@ -1,15 +1,16 @@
-const data = require("./db/data/dev-data/coinsData")
+const data = require("./db/data/pairsData")
 
 function countDuplicateCoinIds(data) {
     const idCounts = {}; // Object to store each coin_id's count
     let duplicates = 0; // Counter for duplicates
-
+    let duplicateArr = [];
     data.forEach(item => {
         if (idCounts[item.coin_id]) {
             // If the coin_id is already in the object, increment duplicates counter
             // only the first time it's recognized as a duplicate
             if (idCounts[item.coin_id] === 1) {
                 duplicates++;
+                duplicateArr.push(item.coin_id)
             }
             idCounts[item.coin_id]++;
         } else {
