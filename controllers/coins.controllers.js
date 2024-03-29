@@ -1,4 +1,4 @@
-const { fetchNewCoins } = require("../models/coins.model");
+const { fetchNewCoins, fetchCoinByCoinId } = require("../models/coins.model");
 
 exports.getNewCoins = (req, res, next) => {
     const timeframe = req.query.timeframe || '1 day';
@@ -8,3 +8,14 @@ exports.getNewCoins = (req, res, next) => {
         })
         .catch(next);
 };
+
+exports.getCoinByCoinId = (req, res, next) => {
+    const { coin_id } = req.params;
+    fetchCoinByCoinId(coin_id)
+        .then((coin) => {
+            res.status(200).send({ coin });
+        })
+        .catch((err) => {
+            next(err)
+        })
+}

@@ -30,7 +30,7 @@ describe("GET /api/coins/new", () => {
 });
 
 describe("GET /api/pairs/summary", () => {
-  test.only("GET:200 sends summary of coins", () => {
+  test("GET:200 sends summary of coins", () => {
     return request(app)
       .get("/api/pairs/summary")
       .expect(200)
@@ -48,3 +48,32 @@ describe("GET /api/pairs/summary", () => {
       });
   });
 });
+
+describe("GET /api/coins/:coin_id", () => {
+    test("GET:200 sends new coins for default timeframe", () => {
+        return request(app)
+            .get("/api/coins/1")
+            .expect(200)
+            .then((res) => {
+                const coin = res.body.coin
+                    expect(coin).toMatchObject({
+                        coin_id: expect.any(Number),
+                        symbol: expect.any(String),
+                        coin_name: expect.any(String),
+                        logo_url: expect.any(String),
+                        marketcap: expect.any(String),
+                        price: expect.any(String),
+                        volume24hr: expect.any(String),
+                        volume_percent_change24hr: expect.any(String)
+                });
+            });
+    })
+    test("GET:404 responds with an appropriate status and error message when given a non-existent api", () => {
+        return request(app)
+            .get("/api/coin")
+            .expect(404)
+            .then((response) => {
+                expect(response.body.msg).toBe("Path not found");
+            });
+    });
+})
