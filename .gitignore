@@ -132,3 +132,6 @@ dist
 
 # misc
 API.json
+coinsData.js
+pairsData.js
+tradeData.js

@@ -50,30 +50,50 @@ describe("GET /api/pairs/summary", () => {
 });
 
 describe("GET /api/coins/:coin_id", () => {
-    test("GET:200 sends new coins for default timeframe", () => {
-        return request(app)
-            .get("/api/coins/1")
-            .expect(200)
-            .then((res) => {
-                const coin = res.body.coin
-                    expect(coin).toMatchObject({
-                        coin_id: expect.any(Number),
-                        symbol: expect.any(String),
-                        coin_name: expect.any(String),
-                        logo_url: expect.any(String),
-                        marketcap: expect.any(String),
-                        price: expect.any(String),
-                        volume24hr: expect.any(String),
-                        volume_percent_change24hr: expect.any(String)
-                });
-            });
-    })
-    test("GET:404 responds with an appropriate status and error message when given a non-existent api", () => {
-        return request(app)
-            .get("/api/coin")
-            .expect(404)
-            .then((response) => {
-                expect(response.body.msg).toBe("Path not found");
-            });
-    });
-})
+  test("GET:200 sends new coins for default timeframe", () => {
+    return request(app)
+      .get("/api/coins/1")
+      .expect(200)
+      .then((res) => {
+        const coin = res.body.coin;
+        expect(coin).toMatchObject({
+          coin_id: expect.any(Number),
+          symbol: expect.any(String),
+          coin_name: expect.any(String),
+          logo_url: expect.any(String),
+          marketcap: expect.any(String),
+          price: expect.any(String),
+          volume24hr: expect.any(String),
+          volume_percent_change24hr: expect.any(String),
+        });
+      });
+  });
+  test("GET:404 responds with an appropriate status and error message when given a non-existent api", () => {
+    return request(app)
+      .get("/api/coin")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Path not found");
+      });
+  });
+});
+
+describe("GET /api/pairs/new", () => {
+  test.only("GET:200 sends all new pairs limited to 20.", () => {
+    return request(app)
+      .get("/api/pairs/new")
+      .expect(200)
+      .then((res) => {
+        const newPairs = res.body.pairs;
+        expect(Array.isArray(newPairs)).toBe(true);
+        expect(newPairs.length).toBeLessThanOrEqual(20);
+        newPairs.forEach((pair) => {
+          expect(pair).toMatchObject({
+            pair_name: expect.any(String),
+            date_added: expect.any(String),
+            is_active: expect.any(Boolean),
+          });
+        });
+      });
+  });
+});
