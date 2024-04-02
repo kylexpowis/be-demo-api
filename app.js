@@ -14,6 +14,8 @@ const {
   getNewCoins,
   getCoinByCoinId,
 } = require("./controllers/coins.controllers");
+
+const { getROCMarketCap } = require("./controllers/closingMCap.controllers");
 /*    FOLLOW THIS!
     - Ensure each endpoint matches the wireframe for that endpoint.
     - Wireframe -> Endpoint -> Pull Request
@@ -33,7 +35,7 @@ app.get("/api/coins/:coin_id", getCoinByCoinId);
 app.get("/api/pairs/:coin_id", getPairByCoinId);
 
 // <---Either in Homepage or its own page--->
-// 1. MarketCap Rankings Table --> "/api/rankings/marketcap"
+app.get("/api/rankings/marketcap", getROCMarketCap);
 
 app.all("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
