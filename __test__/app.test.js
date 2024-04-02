@@ -99,7 +99,7 @@ describe("GET /api/pairs/new", () => {
 });
 
 describe("GET /api/pairs/:coin_id", () => {
-  test.only("GET:200 sends pair details for a given coin ID", () => {
+  test("GET:200 sends pair details for a given coin ID", () => {
     return request(app)
       .get("/api/pairs/1")
       .expect(200)
