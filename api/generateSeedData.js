@@ -56,7 +56,8 @@ async function generateSeedData() {
         const exchangeData = extractExchangeData(exchangeInfoResponse)
         writeDataToFile("./db/data/exchangeData.js", exchangeData);
 
-        const closingMarketcapResponse = await getEndpoint(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/historical?id=${coinIds}&interval=24h&count=1`);
+        const closingMarketcapResponse = await getEndpoint(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/historical?id=${coinIds}&interval=24h`);
+        console.log(closingMarketcapResponse.data);
         const closingMarketcapData = extractClosingMarketcapData(closingMarketcapResponse.data);
         writeDataToFile("./db/data/closingMarketcapData.js", closingMarketcapData);
 

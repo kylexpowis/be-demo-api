@@ -80,7 +80,7 @@ exports.extractTradeData = (data) => {
         marketcap: coin.quote.USD.market_cap,
         volume24hr: coin.quote.USD.volume_24h,
         volume_percent_change24hr: coin.quote.USD.volume_change_24h,
-        timestamp: coin.quote.USD.last_updated,
+        timestamp: new Date().toISOString(),
       });
       seen.add(coin.id);
     }
