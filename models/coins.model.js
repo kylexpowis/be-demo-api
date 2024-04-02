@@ -22,15 +22,26 @@ exports.fetchCoinByCoinId = (coin_id) => {
     c.symbol,
     c.coin_name,
     c.logo_url,
-    t.marketcap,
-    t.price,
-    t.volume24hr,
-    t.volume_percent_change24hr,
-    (t.volume24hr / t.marketcap) AS volume_marketcap
+    t.current_marketcap,
+    t.current_volume,
+    t.vol_percentage_change,
+    v.volume_over_marketcap
 FROM
     coins c
 JOIN
     tradeinfo t ON t.coin_id = c.coin_id
+JOIN (
+    SELECT
+        coin_id,
+        volume_over_marketcap,
+        timestamp
+    FROM
+        vol24marketcap v1
+    WHERE
+        v1.timestamp = (SELECT MAX(v2.timestamp)
+                        FROM vol24marketcap v2
+                        WHERE v1.coin_id = v2.coin_id)
+) v ON v.coin_id = c.coin_id
 WHERE
     c.coin_id = $1;`;
     return db.query(queryString, [coin_id]).then((result) => {
