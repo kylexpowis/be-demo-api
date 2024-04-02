@@ -15,7 +15,7 @@ const {
   getCoinByCoinId,
 } = require("./controllers/coins.controllers");
 
-const { getROCMarketCap } = require("./controllers/closingMCap.controllers");
+const { getROCMarketCap, getVolumeROC } = require("./controllers/closingMCap.controllers");
 /*    FOLLOW THIS!
     - Ensure each endpoint matches the wireframe for that endpoint.
     - Wireframe -> Endpoint -> Pull Request
@@ -36,6 +36,8 @@ app.get("/api/pairs/:coin_id", getPairByCoinId);
 
 // <---Either in Homepage or its own page--->
 app.get("/api/rankings/marketcap", getROCMarketCap);
+
+app.get("/api/rankings/volumeroc", getVolumeROC)
 
 app.all("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
