@@ -117,7 +117,7 @@ exports.extractExchangeData = (data) => {
 exports.extractClosingMarketcapData = (data) => {
   return Object.entries(data).map(([coinId, coinData]) => ({
       coin_id: coinId,
-      closing_marketcap: coinData.quotes[coinData.quotes.length - 1].quote.USD.market_cap,
+      closing_marketcap: coinData.quotes[coinData.quotes.length - 1]?.quote.USD.market_cap || null,
       timestamp: coinData.quotes[coinData.quotes.length - 1].timestamp,
   }));
 }
