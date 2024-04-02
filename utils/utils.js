@@ -59,12 +59,8 @@ exports.extractPairs = (data) => {
         pair_name: item.market_pair,
         base_id: item.market_pair_base.currency_id,
         quote_id: item.market_pair_quote.currency_id,
-        depth_positive_two: item.quote.USD.depth_positive_two,
-        depth_negative_two: item.quote.USD.depth_negative_two,
-        volume24hr: item.quote.USD.volume_24h,
         is_active: true,
         date_added: new Date().toISOString(),
-        last_updated: item.quote.USD.last_updated,
       });
       seen.add(item.market_id);
     }
@@ -81,11 +77,7 @@ exports.extractTradeData = (data) => {
     if (coin.quote && coin.quote.USD && !seen.has(coin.id)) {
       tradeData.push({
         coin_id: coin.id,
-        price: coin.quote.USD.price,
         marketcap: coin.quote.USD.market_cap,
-        circulating_supply: coin.circulating_supply,
-        total_supply: coin.total_supply,
-        max_supply: coin.max_supply,
         volume24hr: coin.quote.USD.volume_24h,
         volume_percent_change24hr: coin.quote.USD.volume_change_24h,
         timestamp: coin.quote.USD.last_updated,

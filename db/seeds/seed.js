@@ -29,6 +29,7 @@ const seed = async ({ coinsData, pairsData, tradeData, exchangeData, closingMark
       base_id INT NOT NULL,
       quote_id INT NOT NULL,
       is_active BOOLEAN DEFAULT TRUE,
+      date_added TIMESTAMP,
       FOREIGN KEY (base_id) REFERENCES coins(coin_id) ON DELETE CASCADE,
       FOREIGN KEY (quote_id) REFERENCES coins(coin_id) ON DELETE CASCADE
     );
@@ -84,10 +85,10 @@ const seed = async ({ coinsData, pairsData, tradeData, exchangeData, closingMark
   }
 
   if (pairsData.length) {
-    const formattedPairsData = pairsData.map(({ pair_id, pair_name, base_id, quote_id, is_active }) => [
-      pair_id, pair_name, base_id, quote_id, is_active
+    const formattedPairsData = pairsData.map(({ pair_id, pair_name, base_id, quote_id, is_active, date_added }) => [
+      pair_id, pair_name, base_id, quote_id, is_active, date_added
     ]);
-    const pairsQuery = format('INSERT INTO pairs (pair_id, pair_name, base_id, quote_id, is_active) VALUES %L;', formattedPairsData);
+    const pairsQuery = format('INSERT INTO pairs (pair_id, pair_name, base_id, quote_id, is_active, date_added) VALUES %L;', formattedPairsData);
     await db.query(pairsQuery);
   }
 
