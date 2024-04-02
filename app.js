@@ -3,6 +3,7 @@ const cors = require("cors");
 const {
   getPairsSummary,
   showNewPairs,
+  getPairByCoinId,
 } = require("./controllers/pairs.controllers");
 const app = express();
 
@@ -29,7 +30,7 @@ app.get("/api/coins/new", getNewCoins);
 // 1. Coin Summary --> "/api/coins/:coin_id"
 app.get("/api/coins/:coin_id", getCoinByCoinId);
 
-// 2. Pairs By Coin ID --> "/api/pairs/:coin_id"
+app.get("/api/pairs/:coin_id", getPairByCoinId);
 
 // <---Either in Homepage or its own page--->
 // 1. MarketCap Rankings Table --> "/api/rankings/marketcap"
