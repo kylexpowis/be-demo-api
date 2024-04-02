@@ -7,11 +7,11 @@ exports.extractCoins = (data) => {
       coins.push({
         coin_id: item.market_pair_base.currency_id,
         symbol: item.market_pair_base.currency_symbol,
-        coin_name: null, 
+        coin_name: null,
         currency_type: item.market_pair_base.currency_type,
-        logo_url: null, 
-        is_active: true, 
-        date_added: null, 
+        logo_url: null,
+        is_active: true,
+        date_added: null,
       });
       seen.add(item.market_pair_base.currency_id);
     }
@@ -22,9 +22,9 @@ exports.extractCoins = (data) => {
         symbol: item.market_pair_quote.currency_symbol,
         coin_name: null,
         currency_type: item.market_pair_quote.currency_type,
-        logo_url: null, 
-        is_active: true, 
-        date_added: null, 
+        logo_url: null,
+        is_active: true,
+        date_added: null,
       });
       seen.add(item.market_pair_quote.currency_id);
     }
@@ -39,9 +39,9 @@ exports.updateCoinsData = (coinsData, coinInfoResponse) => {
     if (coinInfo) {
       return {
         ...coin,
-        coin_name: coinInfo.name, 
-        logo_url: coinInfo.logo,  
-        date_added: coinInfo.date_added 
+        coin_name: coinInfo.name,
+        logo_url: coinInfo.logo,
+        date_added: coinInfo.date_added
       };
     }
     return coin;
@@ -62,7 +62,7 @@ exports.extractPairs = (data) => {
         depth_positive_two: item.quote.USD.depth_positive_two,
         depth_negative_two: item.quote.USD.depth_negative_two,
         volume24hr: item.quote.USD.volume_24h,
-        is_active: true, 
+        is_active: true,
         date_added: new Date().toISOString(),
         last_updated: item.quote.USD.last_updated,
       });
@@ -96,3 +96,28 @@ exports.extractTradeData = (data) => {
 
   return tradeData;
 };
+
+exports.extractExchangeData = (data) => {
+  if (!data || !data.data || !data.data['270']) {
+    console.error('Invalid data structure');
+    return null;
+  }
+
+  const exchangeData = data.data['270'];
+  const exchangeInfo = {
+    id: exchangeData.id,
+    name: exchangeData.name,
+    coin_count: exchangeData.num_coins,
+    market_pairs_count: exchangeData.num_market_pairs,
+    last_updated: exchangeData.last_updated,
+  };
+  return exchangeInfo;
+}
+
+exports.extractClosingMarketcapData = (data) => {
+  return Object.entries(data).map(([coinId, coinData]) => ({
+      coin_id: coinId,
+      closing_marketcap: coinData.quotes[coinData.quotes.length - 1].quote.USD.market_cap,
+      timestamp: coinData.quotes[coinData.quotes.length - 1].timestamp,
+  }));
+}

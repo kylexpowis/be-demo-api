@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 const config = require("../config/API.json");
-const { extractCoins, extractPairs, extractTradeData, updateCoinsData } = require("../utils/utils");
+const { extractCoins, extractPairs, extractTradeData, updateCoinsData, extractExchangeData, extractClosingMarketcapData } = require("../utils/utils");
 
 const API_KEY = config.API_KEY;
 
@@ -42,8 +42,23 @@ async function generateSeedData() {
         const tradeData = extractTradeData(quotesResponse.data);
         writeDataToFile("./db/data/tradeData.js", tradeData);
 
+        const volume24MarketcapData = tradeData.map(coin => ({
+            coin_id: coin.coin_id,
+            volume_over_marketcap: (coin.volume24hr / coin.marketcap) * 100,
+            timestamp: coin.timestamp,
+        }));
+        writeDataToFile("./db/data/volume24MarketcapData.js", volume24MarketcapData);
+
         const pairsData = extractPairs(marketPairsResponse.data.market_pairs);
         writeDataToFile("./db/data/pairsData.js", pairsData);
+
+        const exchangeInfoResponse = await getEndpoint("https://pro-api.coinmarketcap.com/v1/exchange/quotes/latest?id=270")
+        const exchangeData = extractExchangeData(exchangeInfoResponse)
+        writeDataToFile("./db/data/exchangeData.js", exchangeData);
+
+        const closingMarketcapResponse = await getEndpoint(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/historical?id=${coinIds}&interval=24h&count=1`);
+        const closingMarketcapData = extractClosingMarketcapData(closingMarketcapResponse.data);
+        writeDataToFile("./db/data/closingMarketcapData.js", closingMarketcapData);
 
     } catch (error) {
         console.error("Failed to create seed data:", error);

@@ -132,6 +132,9 @@ dist
 
 # misc
 API.json
-coinsData.js
-pairsData.js
-tradeData.js
+db/data/coinsData.js
+db/data/pairsData.js
+db/data/tradeData.js
+db/data/exchangeData.js
+db/data/closingMarketcapData.js
+db/data/volume24MarketcapData.js
