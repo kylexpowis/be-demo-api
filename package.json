@@ -9,7 +9,7 @@
     "seed-prod": "cross-env NODE_ENV=production npm run seed",
     "start": "node app.js",
     "test": "jest --coverage",
-    "finish-project": "echo 'Relax lad. Do it yourself. Stop crying.'"
+    "seed-gen": "node ./api/generateSeedData.js"
   },
   "repository": {
     "type": "git",
