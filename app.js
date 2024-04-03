@@ -14,9 +14,6 @@ const {
   getVolumeROC,
 } = require("./controllers");
 
-app.get("/healthcheck", (req, res) => {
-  res.status(200).send({ status: "OK" });
-});
 app.get("/api/pairs/summary", getPairsSummary);
 app.get("/api/pairs/new", showNewPairs);
 app.get("/api/coins/new", getNewCoins);
