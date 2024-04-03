@@ -7,18 +7,16 @@ exports.fetchROCMarketCap = () => {
   (
     (tradeinfo.current_marketcap - closing_marketcap.closing_marketcap) / closing_marketcap.closing_marketcap * 100
   ) AS percentage_change
-FROM
+  FROM
   closing_marketcap
-JOIN
+  JOIN
   tradeinfo ON closing_marketcap.coin_id = tradeinfo.coin_id
-JOIN
+  JOIN
   coins ON closing_marketcap.coin_id = coins.coin_id
-WHERE
+  WHERE
   coins.currency_type = 'cryptocurrency'
       `;
-  return db.query(queryString).then(({ rows }) => {
-    return rows;
-  });
+  return db.query(queryString).then(({ rows }) => rows);
 };
 
 exports.fetchVolumeROC = () => {
@@ -30,11 +28,10 @@ exports.fetchVolumeROC = () => {
     c.logo_url,
     t.vol_percentage_change,
     v.volume_over_marketcap
-FROM
-    coins c
-JOIN
+    FROM coins c
+    JOIN
     tradeinfo t ON t.coin_id = c.coin_id
-JOIN (
+    JOIN (
     SELECT
         coin_id,
         volume_over_marketcap,
@@ -45,8 +42,7 @@ JOIN (
         v1.timestamp = (SELECT MAX(v2.timestamp)
                         FROM vol24marketcap v2
                         WHERE v1.coin_id = v2.coin_id)
-) v ON v.coin_id = c.coin_id AND c.currency_type = 'cryptocurrency'`;
-  return db.query(queryString).then(({ rows }) => {
-    return rows;
-})
-}
+          ) v ON v.coin_id = c.coin_id
+          AND c.currency_type = 'cryptocurrency'`;
+  return db.query(queryString).then(({ rows }) => rows);
+};

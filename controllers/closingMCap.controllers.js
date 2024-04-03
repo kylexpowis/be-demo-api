@@ -10,8 +10,8 @@ exports.getROCMarketCap = (req, res, next) => {
 
 exports.getVolumeROC = (req, res, next) => {
   fetchVolumeROC(req.body)
-  .then((coins)=> {
-    res.status(200).send({coins})
-  })
+    .then((coins) => {
+      res.status(200).send({ coins });
+    })
     .catch(next);
-}
+};
