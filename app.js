@@ -26,6 +26,10 @@ app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Path not found" });
 });
 
+app.get("/api/healthcheck", (req, res) => {
+  res.status(200).send({ status: "ok" });
+});
+
 app.use((err, req, res) => {
   console.log(err, "<-- error in app.js");
   const status = err.status || 500;
