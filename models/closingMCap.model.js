@@ -1,21 +1,22 @@
 const db = require("../db/connection");
 
 exports.fetchROCMarketCap = () => {
-  const queryString = `SELECT
-  closing_marketcap.coin_id,
-  closing_marketcap.timestamp,
+  const queryString = `SELECT DISTINCT ON (cm.coin_id)
+  cm.coin_id,
+  cm.timestamp,
   (
-    (tradeinfo.current_marketcap - closing_marketcap.closing_marketcap) / closing_marketcap.closing_marketcap * 100
+    (ti.current_marketcap - cm.closing_marketcap) / cm.closing_marketcap * 100
   ) AS percentage_change
   FROM
-  closing_marketcap
+  closing_marketcap cm
   JOIN
-  tradeinfo ON closing_marketcap.coin_id = tradeinfo.coin_id
+  tradeinfo ti ON cm.coin_id = ti.coin_id
   JOIN
-  coins ON closing_marketcap.coin_id = coins.coin_id
+  coins c ON cm.coin_id = c.coin_id
   WHERE
-  coins.currency_type = 'cryptocurrency'
-      `;
+  c.currency_type = 'cryptocurrency'
+  ORDER BY
+  cm.coin_id, cm.timestamp DESC;`;
   return db.query(queryString).then(({ rows }) => rows);
 };
 

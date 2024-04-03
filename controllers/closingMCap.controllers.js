@@ -1,7 +1,7 @@
 const { fetchROCMarketCap, fetchVolumeROC } = require("../models/closingMCap.model");
 
 exports.getROCMarketCap = (req, res, next) => {
-  fetchROCMarketCap(req.body)
+  fetchROCMarketCap()
     .then((coins) => {
       res.status(200).send({ coins });
     })
@@ -9,7 +9,7 @@ exports.getROCMarketCap = (req, res, next) => {
 };
 
 exports.getVolumeROC = (req, res, next) => {
-  fetchVolumeROC(req.body)
+  fetchVolumeROC()
     .then((coins) => {
       res.status(200).send({ coins });
     })
