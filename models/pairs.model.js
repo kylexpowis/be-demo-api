@@ -26,10 +26,7 @@ exports.fetchNewPairs = () => {
   c.logo_url
 FROM coins c;`;
   return db.query(queryString).then((result) => {
-    if (result.rows.length === 0) {
-      return Promise.reject({ status: 404, msg: "Coin does not exist" });
-    }
-    return result.rows[0];
+    return result.rows;
   });
 };
 
