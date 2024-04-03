@@ -20,7 +20,7 @@ exports.showNewPairs = (req, res, next) => {
     .catch(next);
 };
 
-exports.getPairByCoinId = (req, res, next) => {
+exports.getPairsByCoinId = (req, res, next) => {
   const { coin_id } = req.params;
   fetchPairByCoinId(coin_id)
     .then((pairById) => {

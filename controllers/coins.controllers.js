@@ -6,7 +6,7 @@ exports.getNewCoins = (req, res, next) => {
         .then((coins) => {
             res.status(200).send({ coins });
         })
-        .catch(next);
+        .catch(next); 
 };
 
 exports.getCoinByCoinId = (req, res, next) => {
@@ -15,7 +15,5 @@ exports.getCoinByCoinId = (req, res, next) => {
         .then((coin) => {
             res.status(200).send({ coin });
         })
-        .catch((err) => {
-            next(err)
-        })
+        .catch(next); 
 }
