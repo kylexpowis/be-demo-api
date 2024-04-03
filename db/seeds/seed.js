@@ -61,7 +61,7 @@ const seed = async ({ coinsData, pairsData, tradeData, exchangeData, closingMark
     await db.query(`
     CREATE TABLE closing_marketcap (
       close_id SERIAL PRIMARY KEY,
-      coin_id INT,
+      coin_id INT UNIQUE,
       closing_marketcap DECIMAL,
       timestamp TIMESTAMP,
       FOREIGN KEY (coin_id) REFERENCES coins(coin_id) ON DELETE CASCADE
