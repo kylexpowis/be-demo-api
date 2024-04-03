@@ -5,7 +5,7 @@ const {
 } = require("../models/pairs.model");
 
 exports.getPairsSummary = (req, res, next) => {
-  fetchMarketSummary(req.body)
+  fetchMarketSummary()
     .then((pairs) => {
       res.status(200).send({ pairs });
     })
@@ -13,7 +13,7 @@ exports.getPairsSummary = (req, res, next) => {
 };
 
 exports.showNewPairs = (req, res, next) => {
-  showLatestPairs(req.body)
+  showLatestPairs()
     .then((pairs) => {
       res.status(200).send({ pairs });
     })
