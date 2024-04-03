@@ -1,11 +1,11 @@
 const {
-  fetchNewPairs,
   showLatestPairs,
   fetchPairByCoinId,
+  fetchMarketSummary,
 } = require("../models/pairs.model");
 
 exports.getPairsSummary = (req, res, next) => {
-  fetchNewPairs(req.body)
+  fetchMarketSummary(req.body)
     .then((pairs) => {
       res.status(200).send({ pairs });
     })

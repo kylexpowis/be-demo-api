@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-exports.fetchNewPairs = () => {
+exports.fetchMarketSummary = () => {
   const queryString = `
   SELECT
   c.coin_id,
