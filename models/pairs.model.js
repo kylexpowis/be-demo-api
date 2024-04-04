@@ -35,7 +35,6 @@ exports.showLatestPairs = () => {
     pair_name,
     date_added,
     is_active FROM pairs ORDER BY date_added
-      DESC LIMIT 20
     `;
   return db.query(queryString).then(({ rows }) => {
     return rows;
