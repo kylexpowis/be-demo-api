@@ -32,34 +32,36 @@ ORDER BY
 
 exports.fetchVolumeROC = () => {
   const queryString = `
-  WITH ranked_tradeinfo AS (
+  WITH latest_timestamps AS (
     SELECT
       coin_id,
-      vol_percentage_change,
-      ROW_NUMBER() OVER (PARTITION BY coin_id ORDER BY timestamp DESC) as rank
-    FROM tradeinfo
+      MAX(timestamp) as latest_timestamp
+    FROM
+      vol24marketcap
+    GROUP BY
+      coin_id
   ),
-  latest_volume AS (
+  latest_vol24marketcap AS (
     SELECT
-      coin_id,
-      volume_over_marketcap,
-      ROW_NUMBER() OVER (PARTITION BY coin_id ORDER BY timestamp DESC) as rank
-    FROM vol24marketcap
+      vm.coin_id,
+      vm.volume_over_marketcap,
+      vm.timestamp
+    FROM
+      vol24marketcap vm
+      INNER JOIN latest_timestamps lt ON vm.coin_id = lt.coin_id AND vm.timestamp = lt.latest_timestamp
   )
   SELECT
     c.coin_id,
     c.symbol,
     c.coin_name,
     c.logo_url,
-    t.vol_percentage_change,
-    v.volume_over_marketcap
+    c.currency_type,
+    v.volume_over_marketcap,
+    v.timestamp
   FROM
     coins c
-  JOIN
-    ranked_tradeinfo t ON t.coin_id = c.coin_id AND t.rank = 1
-  JOIN
-    latest_volume v ON v.coin_id = c.coin_id AND v.rank = 1
-  WHERE
-    c.currency_type = 'cryptocurrency';`;
+    JOIN latest_vol24marketcap v ON v.coin_id = c.coin_id
+  ORDER BY
+    v.timestamp DESC, v.volume_over_marketcap DESC;`;
   return db.query(queryString).then(({ rows }) => rows);
 };
