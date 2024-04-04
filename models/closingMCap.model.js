@@ -26,7 +26,7 @@ INNER JOIN
 WHERE
     c.is_active = TRUE
 ORDER BY
-    c.coin_id;`;
+    marketcap_percentage_change DESC;`;
   return db.query(queryString).then(({ rows }) => rows);
 };
 
