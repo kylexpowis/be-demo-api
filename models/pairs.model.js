@@ -34,7 +34,7 @@ exports.showLatestPairs = () => {
   const queryString = `SELECT
     pair_name,
     date_added,
-    is_active FROM pairs ORDER BY date_added
+    is_active FROM pairs ORDER BY date_added DESC;
     `;
   return db.query(queryString).then(({ rows }) => {
     return rows;
