@@ -1,7 +1,7 @@
 const db = require("../db/connection");
 
 exports.fetchNewCoins = (timeframe = '1 day') => {
-    const validTimeframes = ['1 hour', '1 day', '3 days', '7 days', '14 days'];
+    const validTimeframes = ['1 hour', '8 hours', '1 day', '3 days', '7 days', '14 days', '28 days'];
     if (!validTimeframes.includes(timeframe)) {
         throw new Error('Invalid timeframe specified');
     }

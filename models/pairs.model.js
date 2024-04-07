@@ -9,7 +9,7 @@ exports.fetchMarketSummary = () => {
   (
       SELECT COUNT(p.pair_name)::int
       FROM pairs p
-      WHERE p.base_id = c.coin_id
+      WHERE p.base_id = c.coin_id AND p.is_active = true
   ) AS pair_count,
   (
       SELECT COUNT(p.pair_name)::int
@@ -30,12 +30,15 @@ FROM coins c;`;
   });
 };
 
-exports.showLatestPairs = () => {
-  const queryString = `SELECT
-    pair_name,
-    date_added,
-    is_active FROM pairs ORDER BY date_added DESC;
-    `;
+exports.fetchNewPairs = (timeframe) => {
+  const validTimeframes = ['1 hour', '8 hours', '1 day', '3 days', '7 days', '14 days', '28 days'];
+  if (!validTimeframes.includes(timeframe)) {
+    throw new Error('Invalid timeframe specified');
+  }
+  const queryString = `
+    SELECT * FROM pairs 
+      WHERE date_added >= NOW() - INTERVAL '${timeframe}'
+    ORDER BY date_added;`;
   return db.query(queryString).then(({ rows }) => {
     return rows;
   });

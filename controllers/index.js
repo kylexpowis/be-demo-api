@@ -1,6 +1,6 @@
 const { getROCMarketCap, getVolumeROC } = require("./closingMCap.controllers");
 const { getNewCoins, getCoinByCoinId } = require("./coins.controllers");
-const { getPairsSummary, showNewPairs, getPairsByCoinId } = require('./pairs.controllers');
+const { getPairsSummary, getNewPairs, getPairsByCoinId } = require('./pairs.controllers');
 
 
 module.exports = {
@@ -9,6 +9,6 @@ module.exports = {
     getNewCoins,
     getCoinByCoinId,
     getPairsSummary,
-    showNewPairs,
+    getNewPairs,
     getPairsByCoinId
 }
