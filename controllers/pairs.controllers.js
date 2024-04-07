@@ -1,5 +1,5 @@
 const {
-  showLatestPairs,
+  fetchNewPairs,
   fetchPairByCoinId,
   fetchMarketSummary,
 } = require("../models/pairs.model");
@@ -12,8 +12,9 @@ exports.getPairsSummary = (req, res, next) => {
     .catch(next);
 };
 
-exports.showNewPairs = (req, res, next) => {
-  showLatestPairs()
+exports.getNewPairs = (req, res, next) => {
+  const timeframe = req.query.timeframe || '1 day';
+  fetchNewPairs(timeframe)
     .then((pairs) => {
       res.status(200).send({ pairs });
     })
