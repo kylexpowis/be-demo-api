@@ -36,7 +36,8 @@ describe("GET /api/pairs/summary", () => {
             .expect(200)
             .then((res) => {
                 const coins = res.body.pairs;
-                expect(coins).toMatchObject({
+                coins.forEach(coin => {
+                    expect(coin).toMatchObject({
                     coin_id: expect.any(Number),
                     coin_name: expect.any(String),
                     symbol: expect.any(String),
@@ -44,6 +45,7 @@ describe("GET /api/pairs/summary", () => {
                     pairs_added: expect.any(Number),
                     pairs_removed: expect.any(Number),
                     logo_url: expect.any(String),
+                });
                 });
             });
     });
