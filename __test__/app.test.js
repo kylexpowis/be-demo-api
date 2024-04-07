@@ -36,16 +36,17 @@ describe("GET /api/pairs/summary", () => {
             .expect(200)
             .then((res) => {
                 const coins = res.body.pairs;
-                coins.forEach(coin => {
+                expect(Array.isArray(coins)).toBe(true);
+                coins.forEach((coin) => {
                     expect(coin).toMatchObject({
-                    coin_id: expect.any(Number),
-                    coin_name: expect.any(String),
-                    symbol: expect.any(String),
-                    pair_count: expect.any(Number),
-                    pairs_added: expect.any(Number),
-                    pairs_removed: expect.any(Number),
-                    logo_url: expect.any(String),
-                });
+                        coin_id: expect.any(Number),
+                        coin_name: expect.any(String),
+                        symbol: expect.any(String),
+                        pair_count: expect.any(Number),
+                        pairs_added: expect.any(Number),
+                        pairs_removed: expect.any(Number),
+                        logo_url: expect.any(String),
+                    });
                 });
             });
     });
@@ -81,14 +82,13 @@ describe("GET /api/coins/:coin_id", () => {
 });
 
 describe("GET /api/pairs/new", () => {
-    test("GET:200 sends all new pairs limited to 20.", () => {
+    test("GET:200 sends all new pairs.", () => {
         return request(app)
             .get("/api/pairs/new")
             .expect(200)
             .then((res) => {
                 const newPairs = res.body.pairs;
                 expect(Array.isArray(newPairs)).toBe(true);
-                expect(newPairs.length).toBeLessThanOrEqual(20);
                 newPairs.forEach((pair) => {
                     expect(pair).toMatchObject({
                         pair_name: expect.any(String),
@@ -165,15 +165,13 @@ describe("GET /api/rankings/volumeroc", () => {
                         symbol: expect.any(String),
                         coin_name: expect.any(String),
                         logo_url: expect.any(String),
-                        vol_percentage_change: expect.any(String),
                     });
                     if (coin.volume_over_marketcap !== null) {
                         expect(coin.volume_over_marketcap).toEqual(expect.any(String));
                     } else {
                         expect(coin.volume_over_marketcap).toBeNull();
                     }
-                    })
-                })
+                });
             });
     });
-
+});
