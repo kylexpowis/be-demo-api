@@ -24,7 +24,8 @@ exports.fetchMarketSummary = () => {
       AND p.is_active = false
   ) AS pairs_removed,
   c.logo_url
-FROM coins c;`;
+  FROM coins c
+  ORDER BY pairs_added DESC;`;
   return db.query(queryString).then((result) => {
     return result.rows;
   });
