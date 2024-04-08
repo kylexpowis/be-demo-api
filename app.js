@@ -12,7 +12,10 @@ const {
   getCoinByCoinId,
   getROCMarketCap,
   getVolumeROC,
+  getVolMarkcapData,
 } = require("./controllers");
+
+
 
 app.get("/api/pairs/summary", getPairsSummary);
 app.get("/api/pairs/new", getNewPairs);
@@ -21,6 +24,7 @@ app.get("/api/coins/:coin_id", getCoinByCoinId);
 app.get("/api/pairs/:coin_id", getPairsByCoinId);
 app.get("/api/rankings/marketcap", getROCMarketCap);
 app.get("/api/rankings/volumeroc", getVolumeROC);
+app.get("/api/volumemarketcap/:coin_id", getVolMarkcapData);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Path not found" });
