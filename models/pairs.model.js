@@ -48,21 +48,22 @@ exports.fetchNewPairs = (timeframe) => {
 exports.fetchPairByCoinId = (coin_id) => {
   const queryString = `
     SELECT 
-      p.pair_name,
-      p.is_active,
-      p.date_added,
-      base.logo_url as base_logo_url,
-      quote.logo_url as quote_logo_url
-    FROM 
-      pairs p
-    JOIN 
-      coins base ON p.base_id = base.coin_id
-    JOIN 
-      coins quote ON p.quote_id = quote.coin_id
-    WHERE 
-      (p.base_id = $1 OR p.quote_id = $1) AND p.is_active = true
-    ORDER BY 
-      p.date_added DESC;
+    p.pair_name,
+    p.is_active,
+    p.date_added,
+    base.logo_url AS base_logo_url,
+    quote.logo_url AS quote_logo_url
+  FROM 
+    pairs p
+  JOIN 
+    coins base ON p.base_id = base.coin_id
+  JOIN 
+    coins quote ON p.quote_id = quote.coin_id
+  WHERE 
+    p.base_id = $1
+  ORDER BY 
+    p.is_active DESC, 
+    p.date_added DESC;
   `;
   return db.query(queryString, [coin_id]).then(({ rows }) => rows);
 };
