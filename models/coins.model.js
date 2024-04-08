@@ -52,3 +52,15 @@ exports.fetchCoinByCoinId = (coin_id) => {
             return result.rows[0];
         });
 };
+
+exports.fetchVolMarketcapData = (coin_id) => {
+    const queryString = `
+    SELECT * FROM vol24marketcap
+    WHERE coin_id = $1 AND timestamp >= CURRENT_DATE - INTERVAL '5 days'
+    ORDER BY timestamp ASC;
+    `
+    return db.query(queryString, [coin_id])
+    .then((result) => {
+        return result.rows;
+    })
+}
