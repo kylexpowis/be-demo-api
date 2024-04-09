@@ -7,26 +7,19 @@ exports.fetchROCMarketCap = () => {
     c.symbol,
     c.coin_name,
     c.logo_url,
-    ROUND(((ti.current_marketcap - cm.closing_marketcap) / cm.closing_marketcap) * 100, 2) AS marketcap_percentage_change,
-    ti.timestamp AS latest_timestamp
+    ti.current_marketcap, 
+  ROUND(((ti.current_marketcap - cm.closing_marketcap) / cm.closing_marketcap) * 100, 2) AS marketcap_percentage_change,
+    ti.timestamp 
 FROM
     coins c
 INNER JOIN
     closing_marketcap cm ON c.coin_id = cm.coin_id
 INNER JOIN
-    tradeinfo ti ON c.coin_id = ti.coin_id
-INNER JOIN
-    (SELECT
-        coin_id,
-        MAX(timestamp) AS MaxTimestamp
-     FROM
-        tradeinfo
-     GROUP BY
-        coin_id) tm ON ti.coin_id = tm.coin_id AND ti.timestamp = tm.MaxTimestamp
+    tradeinfo ti ON c.coin_id = ti.coin_id AND ti.is_latest = TRUE
 WHERE
     c.is_active = TRUE
 ORDER BY
-    marketcap_percentage_change DESC;`;
+    ti.current_marketcap DESC;`;
   return db.query(queryString).then(({ rows }) => rows);
 };
 
