@@ -49,19 +49,30 @@ exports.fetchVolumeROC = () => {
     FROM
       vol24marketcap vm
       INNER JOIN latest_timestamps lt ON vm.coin_id = lt.coin_id AND vm.timestamp = lt.latest_timestamp
+  ),
+  latest_tradeinfo AS (
+    SELECT
+      ti.coin_id,
+      ti.current_marketcap,
+      ROW_NUMBER() OVER(PARTITION BY ti.coin_id ORDER BY ti.timestamp DESC) as rn
+    FROM
+      tradeinfo ti
   )
-  SELECT
+SELECT
     c.coin_id,
     c.symbol,
     c.coin_name,
     c.logo_url,
     c.currency_type,
     v.volume_over_marketcap,
-    v.timestamp
-  FROM
+    v.timestamp,
+    t.current_marketcap
+FROM
     coins c
     JOIN latest_vol24marketcap v ON v.coin_id = c.coin_id
-  ORDER BY
-    v.timestamp DESC, v.volume_over_marketcap DESC;`;
+    LEFT JOIN latest_tradeinfo t ON c.coin_id = t.coin_id AND t.rn = 1
+ORDER BY
+    t.current_marketcap DESC, v.timestamp DESC, v.volume_over_marketcap DESC;
+`;
   return db.query(queryString).then(({ rows }) => rows);
 };
