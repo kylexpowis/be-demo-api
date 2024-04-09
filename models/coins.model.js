@@ -16,33 +16,42 @@ exports.fetchNewCoins = (timeframe = '1 day') => {
 
 exports.fetchCoinByCoinId = (coin_id) => {
     const queryString = `
-        SELECT
-            c.coin_id,
-            c.symbol,
-            c.coin_name,
-            c.logo_url,
-            t.current_marketcap,
-            t.current_volume,
-            t.vol_percentage_change,
-            v.volume_over_marketcap
-        FROM
-            coins c
-        JOIN
-            tradeinfo t ON t.coin_id = c.coin_id
-        JOIN (
-            SELECT
-                coin_id,
-                volume_over_marketcap,
-                timestamp
-            FROM
-                vol24marketcap v1
-            WHERE
-                v1.timestamp = (SELECT MAX(v2.timestamp)
-                                FROM vol24marketcap v2
-                                WHERE v1.coin_id = v2.coin_id)
-        ) v ON v.coin_id = c.coin_id
-        WHERE
-            c.coin_id = $1;
+    SELECT
+    c.coin_id,
+    c.symbol,
+    c.coin_name,
+    c.logo_url,
+    t.current_marketcap,
+    t.current_volume,
+    t.vol_percentage_change,
+    v.volume_over_marketcap,
+    ROUND(((t.current_marketcap - cm.closing_marketcap) / cm.closing_marketcap) * 100, 2) AS marketcap_percentage_change,
+    (SELECT COUNT(*)
+     FROM pairs p
+     WHERE p.base_id = c.coin_id) AS pair_count,
+    (SELECT COUNT(*)
+     FROM pairs p
+     WHERE p.base_id = c.coin_id
+     AND p.date_added >= NOW() - INTERVAL '7 days') AS pairs_added_this_week,
+    (SELECT COUNT(*)
+     FROM pairs p
+     WHERE p.base_id = c.coin_id
+     AND NOT p.is_active
+     AND p.date_added >= NOW() - INTERVAL '7 days') AS pairs_removed_this_week,
+    (SELECT COUNT(*)
+     FROM pairs p
+     WHERE p.base_id = c.coin_id
+     AND p.date_added >= NOW() - INTERVAL '24 hours') AS pairs_added_last_24_hours
+    FROM
+    coins c
+    JOIN
+    tradeinfo t ON t.coin_id = c.coin_id AND t.is_latest = TRUE
+    JOIN
+    vol24marketcap v ON v.coin_id = c.coin_id AND v.is_latest = TRUE
+    JOIN
+    closing_marketcap cm ON cm.coin_id = c.coin_id
+    WHERE
+    c.coin_id = $1;
     `;
     return db.query(queryString, [coin_id])
         .then((result) => {
