@@ -6,9 +6,9 @@ exports.fetchNewCoins = (timeframe = '1 day') => {
         throw new Error('Invalid timeframe specified');
     }
     const queryString = `
-        SELECT * 
-        FROM coins
-        WHERE coins.date_added >= NOW() - INTERVAL '${timeframe}::interval';
+    SELECT * FROM coins 
+    WHERE date_added >= NOW() - INTERVAL '${timeframe}'::interval
+    ORDER BY date_added;
     `;
     return db.query(queryString)
         .then((result) => result.rows);
