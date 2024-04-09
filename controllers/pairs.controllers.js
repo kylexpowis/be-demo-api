@@ -13,7 +13,7 @@ exports.getPairsSummary = (req, res, next) => {
 };
 
 exports.getNewPairs = (req, res, next) => {
-  const timeframe = req.query.timeframe || '1 day';
+  const timeframe = decodeURIComponent(req.query.timeframe || '1+day').replace(/\+/g, ' ');
   fetchNewPairs(timeframe)
     .then((pairs) => {
       res.status(200).send({ pairs });
