@@ -55,12 +55,20 @@ exports.fetchCoinByCoinId = (coin_id) => {
 
 exports.fetchVolMarketcapData = (coin_id) => {
     const queryString = `
-    SELECT * FROM vol24marketcap
-    WHERE coin_id = $1 AND timestamp >= CURRENT_DATE - INTERVAL '24 hours'
-    ORDER BY timestamp ASC;
-    `
+    SELECT 
+        to_timestamp(floor((extract('epoch' from timestamp) / 300)) * 300) AS rounded_timestamp, 
+        AVG(volume_over_marketcap) AS avg_volume_over_marketcap
+    FROM 
+        vol24marketcap
+    WHERE 
+    coin_id = $1 AND 
+        timestamp >= CURRENT_DATE - INTERVAL '14 days'
+    GROUP BY 
+        rounded_timestamp
+    ORDER BY 
+        rounded_timestamp ASC;`
     return db.query(queryString, [coin_id])
-    .then((result) => {
-        return result.rows;
-    })
+        .then((result) => {
+            return result.rows;
+        })
 }
