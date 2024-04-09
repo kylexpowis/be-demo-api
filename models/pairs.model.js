@@ -38,7 +38,7 @@ exports.fetchNewPairs = (timeframe) => {
   }
   const queryString = `
     SELECT * FROM pairs 
-      WHERE date_added >= NOW() - INTERVAL '${timeframe}'
+      WHERE date_added >= NOW() - INTERVAL '${timeframe}::interval'
     ORDER BY date_added;`;
   return db.query(queryString).then(({ rows }) => {
     return rows;
