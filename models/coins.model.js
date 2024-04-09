@@ -8,7 +8,7 @@ exports.fetchNewCoins = (timeframe = '1 day') => {
     const queryString = `
         SELECT * 
         FROM coins
-        WHERE coins.date_added >= NOW() - INTERVAL '${timeframe}';
+        WHERE coins.date_added >= NOW() - INTERVAL '${timeframe}'::interval';
     `;
     return db.query(queryString)
         .then((result) => result.rows);
