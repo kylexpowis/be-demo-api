@@ -1,7 +1,7 @@
 const { fetchNewCoins, fetchCoinByCoinId, fetchVolMarketcapData } = require("../models/coins.model");
 
 exports.getNewCoins = (req, res, next) => {
-    const timeframe = decodeURIComponent(req.query.timeframe || '1+day').replace(/\+/g, ' ');
+    const timeframe = req.query.timeframe || '1 day';
     fetchNewCoins(timeframe)
         .then((coins) => {
             res.status(200).send({ coins });
