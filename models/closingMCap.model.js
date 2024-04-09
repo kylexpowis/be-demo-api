@@ -25,36 +25,18 @@ ORDER BY
 
 exports.fetchVolumeROC = () => {
   const queryString = `
-  WITH latest_timestamps AS (
-    SELECT
-      coin_id,
-      MAX(timestamp) as latest_timestamp
-    FROM
-      vol24marketcap
-    GROUP BY
-      coin_id
-  ),
-  latest_vol24marketcap AS (
-    SELECT
-      vm.coin_id,
-      vm.volume_over_marketcap,
-      vm.timestamp
-    FROM
-      vol24marketcap vm
-      INNER JOIN latest_timestamps lt ON vm.coin_id = lt.coin_id AND vm.timestamp = lt.latest_timestamp
-  )
   SELECT
     c.coin_id,
     c.symbol,
     c.coin_name,
     c.logo_url,
     c.currency_type,
-    v.volume_over_marketcap,
-    v.timestamp
-  FROM
+    vm.volume_over_marketcap,
+    vm.timestamp
+FROM
     coins c
-    JOIN latest_vol24marketcap v ON v.coin_id = c.coin_id
-  ORDER BY
-    v.timestamp DESC, v.volume_over_marketcap DESC;`;
+    INNER JOIN vol24marketcap vm ON vm.coin_id = c.coin_id AND vm.is_latest = TRUE
+ORDER BY
+    vm.timestamp DESC, vm.volume_over_marketcap DESC;`;
   return db.query(queryString).then(({ rows }) => rows);
 };
