@@ -11,30 +11,6 @@ beforeEach(() => {
 afterAll(() => {
   db.end();
 });
-
-describe('GET: /api/healthcheck to check connection to API', () => {
-  test('200: Should return status code 200 along with a message "OK', () => {
-    return request(app)
-      .get("/api/healthcheck")
-      .expect(200)
-      .then((res) => {
-        expect(res.body.status).toEqual('OK')
-      })
-  });
-});
-
-describe('GET: /api/db-healthcheck check connection to db', () => {
-  test('should return status code 200 and confirm db connection is healthy', () => {
-    return request(app)
-      .get("/api/db-healthcheck")
-      .expect(200)
-      .then((res) => {
-        expect(res.body).toEqual({ status: 'OK' }); 
-      });
-  });
-});
-
-
 describe("GET /api/coins/new", () => {
   test("GET:200 sends new coins for default timeframe", () => {
     return request(app)
