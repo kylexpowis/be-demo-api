@@ -1,7 +1,7 @@
+const { getDBHealthCheck, getHealthCheck } = require("./General.controller");
 const { getROCMarketCap, getVolumeROC } = require("./closingMCap.controllers");
 const { getNewCoins, getCoinByCoinId, getVolMarkcapData } = require("./coins.controllers");
 const { getPairsSummary, getNewPairs, getPairsByCoinId } = require('./pairs.controllers');
-
 
 module.exports = {
     getROCMarketCap,
@@ -11,5 +11,7 @@ module.exports = {
     getPairsSummary,
     getNewPairs,
     getPairsByCoinId,
-    getVolMarkcapData
+    getVolMarkcapData,
+    getHealthCheck,
+    getDBHealthCheck
 }
