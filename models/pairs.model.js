@@ -2,39 +2,60 @@ const db = require("../db/connection");
 
 exports.fetchMarketSummary = () => {
   const queryString = `
-  SELECT
-  c.coin_id,
-  c.coin_name,
-  c.symbol,
-  (
-      SELECT COUNT(p.pair_name)::int
-      FROM pairs p
-      WHERE p.base_id = c.coin_id AND p.is_active = true
-  ) AS pair_count,
-  (
-      SELECT COUNT(p.pair_name)::int
-      FROM pairs p
-      WHERE p.base_id = c.coin_id
-      AND p.date_added >= NOW() - INTERVAL '1 day'
-  ) AS pairs_added,
-  (
-      SELECT COUNT(p.pair_name)::int
-      FROM pairs p
-      WHERE p.base_id = c.coin_id
-      AND p.is_active = false
-  ) AS pairs_removed,
-  c.logo_url
-  FROM coins c
-  ORDER BY pairs_added DESC;`;
+  WITH CoinPairs AS (
+    SELECT
+      c.coin_id,
+      c.coin_name,
+      c.symbol,
+      c.currency_type,
+      (
+        SELECT COUNT(*)
+        FROM pairs p
+        WHERE p.base_id = c.coin_id AND p.is_active = true
+      ) AS pair_count,
+      (
+        SELECT COUNT(*)
+        FROM pairs p
+        WHERE p.base_id = c.coin_id
+          AND p.date_added >= NOW() - INTERVAL '1 day'
+      ) AS pairs_added,
+      (
+        SELECT COUNT(*)
+        FROM pairs p
+        WHERE p.base_id = c.coin_id
+          AND p.is_active = false
+      ) AS pairs_removed,
+      c.logo_url,
+      (
+        SELECT MAX(p.date_added)
+        FROM pairs p
+        WHERE p.base_id = c.coin_id
+      ) AS most_recent_pair_added
+    FROM coins c
+    WHERE c.currency_type = 'cryptocurrency'
+  )
+  
+  SELECT *
+  FROM CoinPairs
+  WHERE most_recent_pair_added IS NOT NULL
+  ORDER BY pairs_added DESC, most_recent_pair_added DESC;`;
   return db.query(queryString).then((result) => {
     return result.rows;
   });
 };
 
 exports.fetchNewPairs = (timeframe) => {
-  const validTimeframes = ['1 hour', '8 hours', '1 day', '3 days', '7 days', '14 days', '28 days'];
+  const validTimeframes = [
+    "1 hour",
+    "8 hours",
+    "1 day",
+    "3 days",
+    "7 days",
+    "14 days",
+    "28 days",
+  ];
   if (!validTimeframes.includes(timeframe)) {
-    throw new Error('Invalid timeframe specified');
+    throw new Error("Invalid timeframe specified");
   }
   const queryString = `
     SELECT * FROM pairs 
