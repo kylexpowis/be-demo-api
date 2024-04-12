@@ -13,12 +13,14 @@ const {
   getROCMarketCap,
   getVolumeROC,
   getVolMarkcapData,
+  getAllCoins
 } = require("./controllers");
 
 
 
 app.get("/api/pairs/summary", getPairsSummary);
 app.get("/api/pairs/new", getNewPairs);
+app.get("/api/coins", getAllCoins);
 app.get("/api/coins/new", getNewCoins);
 app.get("/api/coins/:coin_id", getCoinByCoinId);
 app.get("/api/pairs/:coin_id", getPairsByCoinId);

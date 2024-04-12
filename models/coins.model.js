@@ -81,3 +81,14 @@ exports.fetchVolMarketcapData = (coin_id) => {
             return result.rows;
         })
 }
+
+exports.fetchAllCoins = () => {
+    const queryString = `
+    SELECT * from coins
+    WHERE is_active = true;
+    `
+    return db.query(queryString)
+    .then((result) => {
+        return result.rows
+    })
+}

@@ -37,6 +37,6 @@ FROM
     coins c
     INNER JOIN vol24marketcap vm ON vm.coin_id = c.coin_id AND vm.is_latest = TRUE
 ORDER BY
-    vm.timestamp DESC, vm.volume_over_marketcap DESC;`;
+    vm.volume_over_marketcap DESC;`;
   return db.query(queryString).then(({ rows }) => rows);
 };
