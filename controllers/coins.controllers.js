@@ -1,4 +1,4 @@
-const { fetchNewCoins, fetchCoinByCoinId, fetchVolMarketcapData } = require("../models/coins.model");
+const { fetchNewCoins, fetchCoinByCoinId, fetchVolMarketcapData, fetchAllCoins } = require("../models/coins.model");
 
 exports.getNewCoins = (req, res, next) => {
     const timeframe = req.query.timeframe || '1 day';
@@ -24,4 +24,11 @@ exports.getVolMarkcapData = (req, res, next) => {
         .then((volume) => {
             res.status(200).send({ volume });
         }).catch(next)
+}
+
+exports.getAllCoins = (req, res, next) => {
+    fetchAllCoins()
+    .then((coins) => {
+        res.status(200).send({ coins });
+    }).catch(next) 
 }
