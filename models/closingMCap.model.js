@@ -31,7 +31,7 @@ exports.fetchVolumeROC = () => {
     c.coin_name,
     c.logo_url,
     c.currency_type,
-    vm.volume_over_marketcap,
+    vm.volume_over_marketcap::FLOAT AS volume_over_marketcap,
     vm.timestamp
 FROM
     coins c
