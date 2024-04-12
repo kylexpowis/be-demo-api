@@ -7,7 +7,7 @@ exports.fetchROCMarketCap = () => {
     c.symbol,
     c.coin_name,
     c.logo_url,
-    ti.current_marketcap, 
+    ti.current_marketcap::FLOAT AS current_marketcap, 
     CAST(ROUND(((ti.current_marketcap - cm.closing_marketcap) / cm.closing_marketcap) * 100, 2) AS FLOAT) AS marketcap_percentage_change,
     ti.timestamp 
 FROM
