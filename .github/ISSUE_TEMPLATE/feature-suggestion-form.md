@@ -1,9 +1,9 @@
 ---
 name: Feature Suggestion Form
 about: Suggest one new feature/idea for this project
-title: "**Feature Title**: [Concise and descriptive title]"
+title: New Feature Request
 labels: New Feature Request
-assignees: ProdiGeeZ
+assignees: ''
 
 ---
 
@@ -56,7 +56,3 @@ assignees: ProdiGeeZ
 ## Do you know of any similar features?
 
 [If you’ve seen similar features in other products, or if this request relates to something we’ve talked about before, let us know here.]
-
----
-
-This format provides a comprehensive, full-page layout for a feature suggestion form, structured to guide non-technical users through providing useful feedback without needing to delve into technical specifics.
